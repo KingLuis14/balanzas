@@ -39,17 +39,18 @@ const { classBlock, classUtilities, textAlert, ...attrs } = Astro.props;
                 top: 0;
                 left: 0;
                 padding: 0.2em 1.2em;
-                background-color: #28a745;
+                background-color: #39b40c;
+                color: white; 
+                
                 font-weight: $fw-500;
                 font-size: $fs-title3;
-                animation: pulseGreen 1.5s infinite alternate;
+                animation: pulseGreen 1.2s infinite alternate;
 
                 @keyframes pulseGreen {
-                    0% {
-                        background-color: #28a745; 
-                    }
+                    
                     100% {
-                        background-color: #7cfc00; 
+                        background-color: #7cd424;
+                        
                     }
                 }
             }
