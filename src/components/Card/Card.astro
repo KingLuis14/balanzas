@@ -31,6 +31,7 @@ const { classBlock, classUtilities, textAlert, ...attrs } = Astro.props;
         gap: 1rem;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 0px 8px #0000001a;
 
         &[oferta] {
             &::after {
@@ -39,9 +40,8 @@ const { classBlock, classUtilities, textAlert, ...attrs } = Astro.props;
                 top: 0;
                 left: 0;
                 padding: 0.2em 1.2em;
-                background-color: #39b40c;
+                background-color: $color-green-500;
                 color: white; 
-                
                 font-weight: $fw-500;
                 font-size: $fs-title3;
                 animation: pulseGreen 1.2s infinite alternate;
@@ -49,7 +49,7 @@ const { classBlock, classUtilities, textAlert, ...attrs } = Astro.props;
                 @keyframes pulseGreen {
                     
                     100% {
-                        background-color: #7cd424;
+                        background-color: $color-green-700;
                         
                     }
                 }

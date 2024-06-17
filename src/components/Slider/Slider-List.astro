@@ -4,12 +4,15 @@ import type { HTMLAttributes } from "astro/types";
 interface Props extends HTMLAttributes<"ul"> {
     classUtilities?: string;
     classBlock?: string;
+    autoplay? : boolean;
 }
 
-const { classBlock, classUtilities, ...attrs } = Astro.props;
+const { classBlock, classUtilities,  autoplay = false, ...attrs } = Astro.props;
 ---
 
-<ul class:list={["slider__list", classBlock, classUtilities]} {...attrs}>
+<ul class:list={["slider__list", classBlock, classUtilities]}
+    {...(autoplay && {'data-autoPlay':autoplay})}
+{...attrs}>
     <slot />
 </ul>
 

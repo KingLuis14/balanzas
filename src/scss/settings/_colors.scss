@@ -1,45 +1,38 @@
 
-$color-white: #fff;
-$color-black: #000;
-$color-black-500: #8b8b8b;
-$color-cyan: #0afdd1;
-$color-blue-100: #ebecff;
-$color-blue-600: #0710cd;
-$color-blue-800: #060a53;
-$color-blue-900: #04051a;
-
-
 $light : (
     "neutral": (
-        "000" : $color-white,
-        "500" : $color-black-500,
-        "950" : $color-black,
-    ),
-
-    "contrast":(
-        "100" : $color-cyan,
+        "000" : #fff,
+        "200" : #dcdcdc,
+        "800" : #4a4a4a,
+        "950" : #000,
     ),
 
     "primary":(
-        "100" : $color-blue-100,
-        "600" : $color-blue-600,
-        "800" : $color-blue-800,
-        "900" : $color-blue-900,
+        "100" : #edfef4,
+        "500" : #1fbc61,
+        "700" : #148143,
+    ),
+    "secondary":(
+        "300" : #ffdc30,
+        "500" : #eab108,
+    ),
+    "contrast":(
+        "1" : #181b2e,
     )
 );
 
-
-
-
+// global colors tokens
 
 $color-neutral-000 : var(--neutral-000);
-$color-neutral-400 : var(--neutral-400);
+$color-neutral-200 : var(--neutral-200);
+$color-neutral-800 : var(--neutral-800);
 $color-neutral-950 : var(--neutral-950);
-$color-contrast-100 : var(--contrast-100);
-$color-primary-100 : var(--primary-100);
-$color-primary-600 : var(--primary-600);
-$color-primary-800 : var(--primary-800);
-$color-primary-900 : var(--primary-900);
+$color-green-100 : var(--primary-100);
+$color-green-500 : var(--primary-500);
+$color-green-700 : var(--primary-700);
+$color-yellow-300 : var(--secondary-300);
+$color-yellow-500 : var(--secondary-500);
+$color-blue-900 : var(--contrast-1);
 
 
 $theme : $light;

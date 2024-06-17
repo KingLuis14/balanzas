@@ -1,9 +1,28 @@
-.button{
+@use '../settings/' as *;
 
-    background-color: orange;
-    padding: .5em 1.5em;
-    &[data-type="outline"]{
-        background-color: crimson;
+
+.btn {
+    color: $button-primary-text-color;
+    background-color: $button-primary-bg-color;
+    padding: .5em 1.6em;
+    border-radius: .25rem;
+    font-weight: $fw-600;
+
+
+    &:is(:hover, :focus) {
+        color: $button-primary-text-color-hover;
+        background-color: $button-primary-bg-color-hover;
     }
+
+    &[data-type="secondary"] {
+        color: $button-secondary-text-color;
+        background-color: $button-secondary-bg-color;
+
+        &:is(:hover, :focus){
+            color: $button-secondary-text-color-hover;
+            background-color: $button-secondary-bg-color-hover;
+        }
+    }
+
 
 }

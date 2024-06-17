@@ -33,6 +33,7 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
             super();
             type DIRECTION = "LEFT" | "RIGHT";
             let inInTransition = false;
+            let autoPlaySlider;
 
             const $SliderList = this.querySelector(
                 ".slider__list",
@@ -74,10 +75,15 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 }
             };
 
-            const setDotSlider = (itemSliderToFocus: Element, direction: DIRECTION) => {
-                const DotActive = $SliderDots.querySelector(".slider__dot.active");
-                const firstDot = getItemofArray('initial', $ArraySliderDots);
-                const lastDot = getItemofArray('last', $ArraySliderDots);
+            const setDotSlider = (
+                itemSliderToFocus: Element,
+                direction: DIRECTION,
+            ) => {
+                const DotActive = $SliderDots.querySelector(
+                    ".slider__dot.active",
+                );
+                const firstDot = getItemofArray("initial", $ArraySliderDots);
+                const lastDot = getItemofArray("last", $ArraySliderDots);
 
                 if (DotActive) {
                     DotActive.classList.remove("active");
@@ -87,7 +93,9 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                     if (itemSliderToFocus.hasAttribute("data-itemInicio")) {
                         lastDot.classList.add("active");
                     } else {
-                        DotActive.previousElementSibling.classList.add("active");
+                        DotActive.previousElementSibling.classList.add(
+                            "active",
+                        );
                     }
                 } else {
                     if (itemSliderToFocus.hasAttribute("data-itemFinal")) {
@@ -99,62 +107,86 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
             };
 
             const moveSLider = (direction: DIRECTION) => {
-        if (inInTransition) return;
+                if (inInTransition) return;
 
-        $SliderList.style.setProperty("--transition", "transform .5s");
-        const itemSliderActive = $SliderList.querySelector(".slider__item.active");
-        let $ElementToFocus : Element;
+                $SliderList.style.setProperty("--transition", "transform .5s");
+                const itemSliderActive = $SliderList.querySelector(
+                    ".slider__item.active",
+                );
+                let $ElementToFocus: Element;
 
-        if (direction === "LEFT") {
+                if (direction === "LEFT") {
+                    $ElementToFocus = itemSliderActive.previousElementSibling;
+                    setDotSlider($ElementToFocus, direction);
+                    $SliderList.addEventListener(
+                        "transitionend",
+                        () => transitionSlider(direction, $CloneLastChild),
+                        { once: true },
+                    );
+                } else if (direction === "RIGHT") {
+                    $ElementToFocus = itemSliderActive.nextElementSibling;
+                    setDotSlider($ElementToFocus, direction);
+                    $SliderList.addEventListener(
+                        "transitionend",
+                        () => transitionSlider(direction, $CloneFirstChild),
+                        { once: true },
+                    );
+                }
 
-            $ElementToFocus = itemSliderActive.previousElementSibling;
-            setDotSlider($ElementToFocus, direction);
-            $SliderList.addEventListener( "transitionend", () => transitionSlider(direction, $CloneLastChild), { once: true });
+                const getMoveTransform = $ElementToFocus.getAttribute(
+                    "data-moveTransition",
+                );
 
-        } else if (direction === "RIGHT") {
+                if (itemSliderActive) {
+                    itemSliderActive.classList.remove("active");
+                }
 
-            $ElementToFocus = itemSliderActive.nextElementSibling;
-            setDotSlider($ElementToFocus, direction);
-            $SliderList.addEventListener("transitionend", () => transitionSlider(direction, $CloneFirstChild), { once: true });
-        }
+                $ElementToFocus.classList.add("active");
+                $SliderList.style.setProperty("--Move", `${getMoveTransform}`);
 
-        const getMoveTransform = $ElementToFocus.getAttribute( "data-moveTransition" );
+                // stopAutoPlay(); 
+            // startAutoPlay(); 
+                inInTransition = true;
+            };
 
-        if (itemSliderActive) {
-            itemSliderActive.classList.remove("active");
-        }
+            const transitionSlider = (
+                direction: DIRECTION,
+                elemento: Element,
+            ) => {
+                $SliderList.style.setProperty("--transition", "none");
 
-        $ElementToFocus.classList.add("active");
-        $SliderList.style.setProperty("--Move", `${getMoveTransform}`);
+                if (direction === "LEFT") {
+                    const primerItem = elemento;
 
-        
-        inInTransition = true;
-    };
+                    if (primerItem.classList.contains("active")) {
+                        primerItem.classList.remove("active");
+                        $SliderList.style.setProperty(
+                            "--Move",
+                            `${getItemofArray("last", $ArraySliderListItem).getAttribute("data-moveTransition")}`,
+                        );
+                        getItemofArray(
+                            "last",
+                            $ArraySliderListItem,
+                        ).classList.add("active");
+                    }
+                } else if (direction === "RIGHT") {
+                    const ultimoItem = elemento;
 
-    const transitionSlider = (direction: DIRECTION, elemento: Element) => {
-        $SliderList.style.setProperty("--transition", "none");
+                    if (ultimoItem.classList.contains("active")) {
+                        ultimoItem.classList.remove("active");
+                        $SliderList.style.setProperty(
+                            "--Move",
+                            `${getItemofArray("initial", $ArraySliderListItem).getAttribute("data-moveTransition")}`,
+                        );
+                        getItemofArray(
+                            "initial",
+                            $ArraySliderListItem,
+                        ).classList.add("active");
+                    }
+                }
 
-        if (direction === "LEFT") {
-            const primerItem = elemento;
-
-            if (primerItem.classList.contains("active")) {
-                primerItem.classList.remove("active");
-                $SliderList.style.setProperty("--Move", `${getItemofArray('last', $ArraySliderListItem).getAttribute('data-moveTransition')}`);
-                getItemofArray('last', $ArraySliderListItem).classList.add("active");
-            }
-
-        } else if (direction === "RIGHT") {
-            const ultimoItem = elemento;
-
-            if (ultimoItem.classList.contains("active")) {
-                ultimoItem.classList.remove("active");
-                $SliderList.style.setProperty("--Move", `${getItemofArray('initial', $ArraySliderListItem).getAttribute('data-moveTransition')}`);
-                getItemofArray('initial',$ArraySliderListItem).classList.add("active");
-            }
-        }
-
-        inInTransition = false;
-    };
+                inInTransition = false;
+            };
 
             const loadSliderInitial = () => {
                 $SliderList.style.setProperty("--transition", "none");
@@ -186,12 +218,24 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 }
 
                 if ($ElementActual.classList.contains("slider__dot")) {
-                    const DotActive = $SliderDots.querySelector(".slider__dot.active");
-                    const itemSliderActive = $SliderList.querySelector(".slider__item.active");
-                    const moveTransition = $ElementActual.getAttribute("data-moveTransition");
+                    const DotActive = $SliderDots.querySelector(
+                        ".slider__dot.active",
+                    );
+                    const itemSliderActive = $SliderList.querySelector(
+                        ".slider__item.active",
+                    );
+                    const moveTransition = $ElementActual.getAttribute(
+                        "data-moveTransition",
+                    );
 
-                    $SliderList.style.setProperty("--transition", "transform .5s");
-                    $SliderList.style.setProperty("--Move", `${moveTransition}`);
+                    $SliderList.style.setProperty(
+                        "--transition",
+                        "transform .5s",
+                    );
+                    $SliderList.style.setProperty(
+                        "--Move",
+                        `${moveTransition}`,
+                    );
 
                     if (itemSliderActive) {
                         itemSliderActive.classList.remove("active");
@@ -200,13 +244,37 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                         DotActive.classList.remove("active");
                     }
                     $ElementActual.classList.add("active");
-                    $ArraySliderListItem[$ArraySliderDots.indexOf($ElementActual)].classList.add( "active" );
-                        
+                    $ArraySliderListItem[
+                        $ArraySliderDots.indexOf($ElementActual)
+                    ].classList.add("active");
                 }
-
             });
 
             loadSliderInitial();
+
+            const startAutoPlay = () => {
+                if (!($SliderList.hasAttribute("data-autoPlay"))) return;
+                autoPlaySlider = setInterval(() => {
+                    moveSLider("RIGHT");
+                }, 5000);
+                console.log("puedo mover el slider");
+            };
+
+            const stopAutoPlay = () => {
+                if (!($SliderList.hasAttribute("data-autoPlay"))) return;
+                clearInterval(autoPlaySlider);
+                console.log("no puedo mover el slider");
+            };
+
+            startAutoPlay();
+
+            this.addEventListener("mouseenter", () => {
+                stopAutoPlay();
+            });
+
+            this.addEventListener("mouseleave", () => {
+                startAutoPlay();
+            });
         }
     }
 

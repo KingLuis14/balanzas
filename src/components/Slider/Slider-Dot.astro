@@ -15,15 +15,20 @@ const { classBlock, classUtilities, active,  ...attrs } = Astro.props;
 </button>
 
 <style lang="scss">
+
+@use "../../scss/settings/" as *;
     
     .slider__dot {
         width: 15px;
         aspect-ratio: 1;
-        outline: 2px solid white;
+        background-color: $color-neutral-000;
+        outline: 2px solid $color-neutral-000;
         border-radius: 50%;
+        
 
         &.active {
-            background-color: white;
+            background-color: $color-green-500;
+            outline: 2px solid $color-green-500;
         }
     }
 </style>

@@ -1,6 +1,30 @@
 @use "../settings/index.scss" as *;
 
 
+@for $i from 2 through 16{
+    $value: $i * $base-size;
+    .margin{
+        &-b-#{$i}{
+            margin-block:$value;
+        }
+       &-b-s\:#{$i}{
+            margin-block-start: $value;
+        }
+        &-b-e-#{$i}{
+            margin-block-end: $value;
+        }
+        &-i-#{$i}{
+            margin-inline: $value;
+        }
+        &-i-s-#{$i}{
+            margin-inline-start: $value;
+        }
+        &-i-e-#{$i}{
+            margin-inline-end: $value;
+        }
+    }
+}
+
 @each $sizes, $valueSizes in $sizes{
     .margin{
         &-block-#{$sizes}{

@@ -8,7 +8,7 @@ import SectionPage from "@/components/SectionPage.astro";
 
 <SectionPage classUtilities="padding-section bg-color-primary-100">
     <LayoutWrapper>
-        <h2 class="title-section text-center">Productos</h2>
+        <h2 class="title-section text-center">Nuestros Productos</h2>
         <div class="Products__inner">
         {
             "123456".split("").map((_, index) => (
@@ -30,7 +30,7 @@ import SectionPage from "@/components/SectionPage.astro";
                                 S/ 350
                             </del>
                         </span>
-                        <Button style={{ width: "fit-content" }}>
+                        <Button style={{ width: "fit-content" }} variant="secondary">
                             Ver detalles
                         </Button>
                     </CardContent>
@@ -54,7 +54,7 @@ import SectionPage from "@/components/SectionPage.astro";
             }
 
             @include media-Query(desktop) {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     }
