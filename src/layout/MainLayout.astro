@@ -11,6 +11,7 @@ import "../scss/base/index.scss";
 import Navbar from "@/sections/Navbar.astro";
 import MiFooter from "../components/Footer.astro";
 import MenuData from "../data/Menu.json";
+import BtnWhatsApp from "@/components/BtnWhatsApp.astro";
 
 const {title, description} = Astro.props;
 ---
@@ -41,6 +42,7 @@ const {title, description} = Astro.props;
 		<Navbar ArrayItems={MenuData} />
 		<slot />
 		<MiFooter />
+		<BtnWhatsApp />
 	</body>
 </html>
 

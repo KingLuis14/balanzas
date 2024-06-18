@@ -96,11 +96,10 @@ const { ArrayItems } = Astro.props;
         width: 100%;
         height: var(--alto-header);
         transition: background-color 0.5s;
-        background-color: rgb(255, 255, 255);
-        box-shadow: 0 5px 10px #0000001a;
 
-        &.scroll {
+        &.active {
             background-color: rgb(255, 255, 255);
+            box-shadow: 0 5px 10px #0000001a;
         }
     }
 
@@ -134,7 +133,7 @@ const { ArrayItems } = Astro.props;
         height: 100vh;
         transition: transform 0.3s;
         transform: translateX(100%);
-        padding: 5px 15px;
+        padding: 5px 10px;
         background-color: white;
         overflow-y: auto;
 
@@ -159,10 +158,19 @@ const { ArrayItems } = Astro.props;
             &.subNavbar {
                 overflow: hidden;
 
+                & .Navbar__item {
+                    width: 100%;
+                }
+
+                & .Navbar__link {
+                    color: $color-neutral-950;
+                }
+
                 @include media-Query(desktop) {
                     position: absolute;
                     overflow: visible;
                     top: 100%;
+                    width: 100%;
                     display: none;
                     flex-direction: column;
                     gap: 0;
@@ -184,14 +192,26 @@ const { ArrayItems } = Astro.props;
         &__link {
             display: block;
             padding: 1em;
+            border-radius: .15rem;
             font-weight: 400;
             color: $color-neutral-950;
 
-            &.active{
-                background-color: red;
+            &.activePage {
+                color: $color-neutral-950;
+            }
+
+            &.active {
+                background-color: $color-green-500;
+                color: $color-neutral-000;
+            }
+
+            &:is(:hover, :focus) {
+                background-color: $color-green-500;
+                color: $color-neutral-000;
             }
             @include media-Query(desktop) {
-                padding: 0.5em 1em;
+                padding: 0.5em .7em;
+                color: $color-neutral-000;
             }
         }
 
@@ -269,8 +289,9 @@ const { ArrayItems } = Astro.props;
     const $BtnToogle = document.getElementById("btn-Toogle");
     const $BtnClose = document.getElementById("btn-Close");
     const $NavbarMain = document.getElementById("Navbar-main");
-    const $NavbarItem = $NavbarMain.querySelector(".Navbar__item") ;
-    const $NavbarLink = $NavbarItem.querySelectorAll(".Navbar__link");
+    const $NavbarItem =
+        $NavbarMain.querySelectorAll<HTMLElement>(".Navbar__item");
+    // const $NavbarLink = $NavbarItem.querySelector(".Navbar__link");
     const $NavbarOverlay = document.getElementById("Navbar-Overlay");
     const $SubNavbarWrapper = document.querySelector(
         ".subNavbar-wrapper",
@@ -296,11 +317,15 @@ const { ArrayItems } = Astro.props;
         $NavbarOverlay.setAttribute("data-overlay", "true");
         $NavbarMain.setAttribute("aria-expanded", "true");
         $BtnClose.setAttribute("data-show", "true");
+        $HeaderMain.classList.add("active");
+        document.body.style.overflow = 'hidden';
     });
     $BtnClose.addEventListener("click", () => {
         $NavbarOverlay.setAttribute("data-overlay", "false");
         $BtnClose.setAttribute("data-show", "false");
         $NavbarMain.setAttribute("aria-expanded", "false");
+        $HeaderMain.classList.remove("active");
+        document.body.style.overflow = 'visible';
     });
 
     window.addEventListener("resize", () => {
@@ -318,31 +343,56 @@ const { ArrayItems } = Astro.props;
 
     function handleScroll(scrollPos) {
         if (scrollPos > 0) {
-            $HeaderMain.classList.add("scroll");
+            $HeaderMain.classList.add("active");
+            $NavbarItem.forEach((item) => {
+        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
+        $link.classList.add("activePage");
+        
+    });
         } else {
-            $HeaderMain.classList.remove("scroll");
+            $HeaderMain.classList.remove("active");
+            $NavbarItem.forEach((item) => {
+        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
+        $link.classList.remove("activePage");
+        
+    });
+            
         }
     }
 
-    const CurrentUrl = window.location.href;
-    console.log(CurrentUrl, $NavbarLink);
-    $NavbarLink.forEach( (link : HTMLAnchorElement)  => {
-        
-        if(link.href === CurrentUrl){
-            link.classList.add("active")
+    if ($HeaderMain) {
+        const CurrentUrl = window.location.pathname;
+
+        if (!(CurrentUrl === "/")) {
+            $HeaderMain.classList.add("active");
+            $NavbarItem.forEach((item) => {
+                const $link = item.querySelector(
+                    ".Navbar__link",
+                ) as HTMLAnchorElement;
+                $link.classList.add("activePage");
+            });
         }
-    })
+    }
+    const CurrentUrl = window.location.href;
+    $NavbarItem.forEach((item) => {
+        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
+        console.log($link);
+
+        if ($link.href === CurrentUrl) {
+            $link.classList.add("active");
+        }
+    });
 
     document.addEventListener("scroll", () => {
         lastKnownScrollPosition = window.scrollY;
 
-    if (!ticking) {
-        window.requestAnimationFrame(() => {
-            // handleScroll(lastKnownScrollPosition);
-            ticking = false;
-        });
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                handleScroll(lastKnownScrollPosition);
+                ticking = false;
+            });
 
-        ticking = true;
-    }
+            ticking = true;
+        }
     });
 </script>

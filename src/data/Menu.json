@@ -1,13 +1,8 @@
 [
     
     {
-        "item": "Balanza Electronica",
-        "url": "/balanza-electronica",
-        "child" : []
-    },
-    {
-        "item": "Balanza Digital",
-        "url": "/balanza-digital",
+        "item": "Inicio",
+        "url": "/",
         "child" : []
     },
     {
@@ -35,30 +30,35 @@
         "child" : [
             {
                 "item": "Balanzas Comerciales",
-                "url": "/hbalanzas"
+                "url": "/hbalanzas-comerciales/"
             },
             {
                 "item": "Balanzas de plataforma",
-                "url": "/balanzas"
+                "url": "/balanzas-plataforma/"
             },
             {
                 "item": "Balanzas Grameras",
-                "url": "/balanzas"
+                "url": "/balanzas-grameras/"
             },
             {
                 "item": "Balanzas de precision",
-                "url": "/balanzas"
+                "url": "/balanzas-presicion/"
             },
             {
                 "item": "Balanzas Analiticas",
-                "url": "/balanzas"
+                "url": "/balanzas-analiticas/"
             }
             
         ]
     },
     {
+        "item": "Servicios",
+        "url": "/servicios/",
+        "child" : []
+    },
+    {
         "item": "Contacto",
-        "url": "/contacto",
+        "url": "/contacto/",
         "child" : []
     }
 ]
