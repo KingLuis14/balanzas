@@ -325,8 +325,9 @@ const { ArrayItems } = Astro.props;
     }
 
     const CurrentUrl = window.location.href;
-
+    console.log(CurrentUrl, $NavbarLink);
     $NavbarLink.forEach( (link : HTMLAnchorElement)  => {
+        
         if(link.href === CurrentUrl){
             link.classList.add("active")
         }

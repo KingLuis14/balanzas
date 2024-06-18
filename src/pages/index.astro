@@ -1,79 +1,20 @@
 ---
-import "../scss/base/index.scss";
+import MainLayout from "@/layout/MainLayout.astro";
 import NewCurseWordpress from "@/sections/NuevoCurso-WordPress.astro";
 import CursosHome from "@/sections/Cursos-Home.astro";
 import BalanceBeneficies from "@/sections/BalanceBeneficies.astro";
 import Products from "@/sections/Products.astro";
 import HeroHome from "@/sections/Hero-Home.astro";
 import Slider2 from "@/sections/Slider2.astro";
-import Navbar from "@/sections/Navbar.astro";
-import MenuData from "../data/Menu.json";
-import MiFooter from "../components/Footer.astro";
+import Beneficios from "@/sections/Beneficios.astro";
+
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<Navbar ArrayItems={MenuData} />
+<MainLayout title="Balanzas del oriente" description="Balanzas del oriente">
+	
 		<HeroHome />
 		<Products />
-		<!-- <Slider2/> -->
+		<Beneficios/>
 		<CursosHome />
 		<BalanceBeneficies />
-		<MiFooter />
-	</body>
-</html>
-
-<style is:global lang="scss">
-	// @use '../scss/base/' as *;
-	@use "../scss/utilities/" as *;
-</style>
-
-<script>
-	document.addEventListener("DOMContentLoaded", () => {
-		const lazyImages = document.querySelectorAll(".lazy-picture");
-
-		const observer = new IntersectionObserver(
-			(entries, observer) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const picture = entry.target;
-						const sources = picture.querySelectorAll("source");
-						const img = picture.querySelector("img");
-
-						sources.forEach((source) => {
-							source.srcset = source.dataset.srcset;
-							img.srcset = source.dataset.srcset;
-						});
-
-						img.addEventListener("load", () => {
-                                setTimeout(() => {
-                                    img.parentElement.classList.remove(
-                                        "animation-loader",
-                                    );
-                                    img.parentElement.classList.add("loaderOk");
-                                }, 1200);
-                            });
-						
-						
-						observer.unobserve(picture);
-					}
-				});
-			},
-			{ rootMargin: "0px 0px 0px 0px" },
-		);
-
-		lazyImages.forEach((lazyImage) => {
-			observer.observe(lazyImage);
-		});
-	});
-
-	
-
-</script>
+</MainLayout>

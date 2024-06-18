@@ -1,0 +1,92 @@
+---
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+
+import "../scss/base/index.scss";
+
+import Navbar from "@/sections/Navbar.astro";
+import MiFooter from "../components/Footer.astro";
+import MenuData from "../data/Menu.json";
+
+const {title, description} = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+        <title>{title}</title>
+        <meta name="viewport" content="width=device-width" />
+        <meta name="language" content="spanish"/>
+        <meta name="title" content={description}>
+        <meta name="description" content={description}>
+        <meta name="copyright" content="2024 Balanzas del oriente">
+        <meta name="keywords" content="balanzas peru, balanzas selva" />
+        <meta name="robots" content="index, follow" />
+        <meta name="audience" content="all" />
+        <link
+            fetchpriority="high"
+            rel="preload"
+            as="font"
+            href="/fonts/inter-latin-variable-full-normal.woff2"
+            type="font/woff2"
+            crossorigin="anonymous"
+        />
+        <slot name="preload" />
+	</head>
+	<body>
+		<Navbar ArrayItems={MenuData} />
+		<slot />
+		<MiFooter />
+	</body>
+</html>
+
+<style is:global lang="scss">
+	@use "../scss/utilities/" as *;
+</style>
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const lazyImages = document.querySelectorAll(".lazy-picture");
+
+		const observer = new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const picture = entry.target;
+						const sources = picture.querySelectorAll("source");
+						const img = picture.querySelector("img");
+
+						sources.forEach((source) => {
+							source.srcset = source.dataset.srcset;
+							img.srcset = source.dataset.srcset;
+						});
+
+						img.addEventListener("load", () => {
+                                setTimeout(() => {
+                                    img.parentElement.classList.remove(
+                                        "animation-loader",
+                                    );
+                                    img.parentElement.classList.add("loaderOk");
+                                }, 1200);
+                            });
+						
+						
+						observer.unobserve(picture);
+					}
+				});
+			},
+			{ rootMargin: "0px 0px 0px 0px" },
+		);
+
+		lazyImages.forEach((lazyImage) => {
+			observer.observe(lazyImage);
+		});
+	});
+
+	
+
+</script>

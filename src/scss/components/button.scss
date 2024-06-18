@@ -24,5 +24,15 @@
         }
     }
 
+    &[data-type="contrast"] {
+        color: $button-contrast-text-color;
+        background-color: $button-contrast-bg-color;
+
+        &:is(:hover, :focus){
+            color: $button-contrast-text-color-hover;
+            background-color: $button-contrast-bg-color-hover;
+        }
+    }
+
 
 }

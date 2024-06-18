@@ -9,7 +9,7 @@ interface Props extends HTMLAttributes<'section'>{
 const { classBlock, classUtilities, ...attrs } = Astro.props;
 ---
 
-<section class:list={[ classBlock , classUtilities]} {...attrs}>
+<section class:list={[ classBlock , "padding-section", classUtilities]} {...attrs}>
     <slot>
         <p>aqui va tu contenido , este texto es por defecto</p>
     </slot>

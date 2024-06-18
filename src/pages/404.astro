@@ -1,0 +1,30 @@
+---
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import SectionPage from "@/components/SectionPage.astro";
+import MainLayout from "@/layout/MainLayout.astro";
+import { Icon } from "astro-icon/components";
+
+---
+
+<MainLayout title="404" description="pagina no encontrada">
+    <section class="bg-color-primary-100">
+        <LayoutWrapper>
+            <div class="page-error text-center">
+                <Icon name={"404"} size={200}/>
+                <h1 class="superTitle color-primary-500">Página en Construccción</h1>
+                <p>Seguimos trabajando para ofrecerte el mejor servicio</p>
+            </div>
+        </LayoutWrapper>
+    </section>
+    
+    
+</MainLayout>
+
+<style>
+    .page-error{
+        min-height: 100svh;
+        display: grid;
+        gap: 1rem;
+        place-content: center;
+    }
+</style>

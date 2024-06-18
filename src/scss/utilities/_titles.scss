@@ -4,6 +4,10 @@
     @include titles( $fs-title1 , $color-neutral-950 , normal , $fw-700 );
 }
 
+.title-2--invert{
+    @include titles( $fs-title1 , $color-neutral-000 , normal , $fw-700 );
+}
+
 .title-section{
     @include titles( $fs-title1 , $color-neutral-950 , normal , $fw-700 );
     padding-block-end: $padding-section;
