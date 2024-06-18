@@ -8,9 +8,11 @@ import SliderNext from "@/components/Slider/Slider-Next.astro";
 import SliderDot from "@/components/Slider/Slider-Dot.astro";
 import SliderNavigation from "@/components/Slider/Slider-Navigation.astro";
 import { Icon } from "astro-icon/components";
+import Button from "@/components/Button.astro";
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
 ---
 
-<Slider>
+<Slider classBlock="hero-slider">
     <SliderList autoplay>
         {
             sliderData.map(({ img, alt }, index) => (
@@ -27,6 +29,15 @@ import { Icon } from "astro-icon/components";
             ))
         }
     </SliderList>
+    <div class="overlay-slider" style="position: absolute; inset: 0;">
+
+    </div>
+    <LayoutWrapper classBlock="hero-slider__group color-neutral-000">
+            <h1 class="superTitle">Balanzas del Oriente</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, illo delectus ullam provident consequatur numquam repudiandae sint sapiente quo? Quisquam voluptatibus nostrum cum dolores voluptates ratione laborum odio sapiente velit.</p>
+            <Button>Contactanos</Button>
+    </LayoutWrapper>
+   
     <SliderNavigation>
         {
             sliderData.map((_, index) => (
@@ -37,10 +48,29 @@ import { Icon } from "astro-icon/components";
                 ))
         }
     </SliderNavigation>
-    <SliderPrev>
-        <Icon name="ArrowIcon" size={25} />
-    </SliderPrev>
-    <SliderNext >
-        <Icon name="ArrowIcon" size={25} />
-    </SliderNext>
+    
 </Slider>
+
+
+<style lang="scss">
+    .hero-slider{
+        
+
+        &__group{
+            position: absolute;
+            
+            inset: 0;
+            display: grid;
+            align-content: center;
+            justify-items: center;
+            text-align: center;
+            z-index: 20;
+            gap: 1rem;
+
+            > p {
+                width: min(90% , 80ch);
+            }
+        }
+       
+    }
+</style>

@@ -4,6 +4,7 @@ import CardContent from "@/components/Card/Card-Content.astro";
 import Card from "@/components/Card/Card.astro";
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import SectionPage from "@/components/SectionPage.astro";
+import {Product } from '@/data/Products.ts';
 ---
 
 <SectionPage classUtilities="padding-section bg-color-primary-100">
@@ -11,23 +12,25 @@ import SectionPage from "@/components/SectionPage.astro";
         <h2 class="title-section text-center">Nuestros Productos</h2>
         <div class="Products__inner">
         {
-            "123456".split("").map((_, index) => (
-                <Card {...(index %2 ===1 && {textAlert: "Oferta"})}>
-                    <picture>
+            Product.map(({ title, img, price}, index) => (
+                <Card {...(index % 2 === 0 && {textAlert: "Oferta"})}>
+                    <picture class="lazy-picture aspect-ratio-box animation-loader" >
+                        {
+                            img.imagen.map(({url, type})=> (
+                             <source data-srcset={`/img/${url}`} type={`image/${type}`} />
+                            ))
+                        }
                         <img
-                            src="https://asocieperu.com/wp-content/uploads/2021/08/balanza-acu-economica-30kg-300x300.jpg"
-                            class="aspect-ratio-box "
-                            alt="balanza"
+                            class="aspect-ratio-box"
+                            alt={img.alt}
                         />
                     </picture>
                     <CardContent>
-                        <h3 class="fw-600 line-heigth-normal">
-                            Balanza De Plataforma e-Accura PQ2 De 200 Kilos
-                        </h3>
+                        <h3 class="fw-600 line-heigth-normal">{title}</h3>
                         <span class="fs-title3 fw-600">
-                            S/ 320{" "}
+                            S/{price.now}
                             <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
-                                S/ 350
+                                S/{price.old}
                             </del>
                         </span>
                         <Button style={{ width: "fit-content" }} variant="secondary">

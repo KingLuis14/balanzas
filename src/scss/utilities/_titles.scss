@@ -10,5 +10,5 @@
 }
 
 .superTitle{
-    @include titles( $fs-superTitle , $color-neutral-950 , normal );
+    @include titles( $fs-superTitle , $color-neutral-000 , normal,$fw-700 );
 }

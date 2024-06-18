@@ -52,13 +52,6 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
 
             const $ArraySliderDots = Array.from($SliderDots.children);
 
-            //botones
-            const $SliderPrev = this.querySelector(
-                ".slider__prev",
-            ) as HTMLElement;
-            const $SliderNext = this.querySelector(
-                ".slider__next",
-            ) as HTMLElement;
 
             const getItemofArray = (
                 index: number | "initial" | "last",
@@ -79,6 +72,7 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 itemSliderToFocus: Element,
                 direction: DIRECTION,
             ) => {
+                if (!$SliderDots) return;
                 const DotActive = $SliderDots.querySelector(
                     ".slider__dot.active",
                 );
@@ -104,10 +98,12 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                         DotActive.nextElementSibling.classList.add("active");
                     }
                 }
+
+               
             };
 
             const moveSLider = (direction: DIRECTION) => {
-                if (inInTransition) return;
+                if (!$SliderList || inInTransition) return;
 
                 $SliderList.style.setProperty("--transition", "transform .5s");
                 const itemSliderActive = $SliderList.querySelector(
@@ -144,8 +140,8 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 $ElementToFocus.classList.add("active");
                 $SliderList.style.setProperty("--Move", `${getMoveTransform}`);
 
-                // stopAutoPlay(); 
-            // startAutoPlay(); 
+                stopAutoPlay(); 
+                startAutoPlay(); 
                 inInTransition = true;
             };
 
@@ -189,6 +185,7 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
             };
 
             const loadSliderInitial = () => {
+                if (!$SliderList || !$CloneLastChild || !$CloneFirstChild) return;
                 $SliderList.style.setProperty("--transition", "none");
                 $SliderList.style.setProperty("--Move", "-100%");
 
@@ -210,18 +207,17 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 const $ElementActual = e.target as HTMLElement;
 
                 if ($ElementActual.classList.contains("slider__prev")) {
-                    console.log($ElementActual);
                     moveSLider("LEFT");
                 }
                 if ($ElementActual.classList.contains("slider__next")) {
                     moveSLider("RIGHT");
                 }
 
-                if ($ElementActual.classList.contains("slider__dot")) {
+                if ($ElementActual.classList.contains("slider__dot") && $SliderDots) {
                     const DotActive = $SliderDots.querySelector(
                         ".slider__dot.active",
                     );
-                    const itemSliderActive = $SliderList.querySelector(
+                    const itemSliderActive = $SliderList?.querySelector(
                         ".slider__item.active",
                     );
                     const moveTransition = $ElementActual.getAttribute(
@@ -247,6 +243,8 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                     $ArraySliderListItem[
                         $ArraySliderDots.indexOf($ElementActual)
                     ].classList.add("active");
+                    stopAutoPlay(); 
+                    startAutoPlay(); 
                 }
             });
 
@@ -256,28 +254,16 @@ const { classBlock, classUtilities, ...attrs } = Astro.props;
                 if (!($SliderList.hasAttribute("data-autoPlay"))) return;
                 autoPlaySlider = setInterval(() => {
                     moveSLider("RIGHT");
-                }, 5000);
-                console.log("puedo mover el slider");
+                }, 7000);
             };
 
             const stopAutoPlay = () => {
                 if (!($SliderList.hasAttribute("data-autoPlay"))) return;
                 clearInterval(autoPlaySlider);
-                console.log("no puedo mover el slider");
             };
 
             startAutoPlay();
-
-            this.addEventListener("mouseenter", () => {
-                stopAutoPlay();
-            });
-
-            this.addEventListener("mouseleave", () => {
-                startAutoPlay();
-            });
         }
     }
-
-    // Dile al navegador que use nuestra clase AstroHeart para elementos <astro-heart>.
     customElements.define("slider-container", Slider);
 </script>

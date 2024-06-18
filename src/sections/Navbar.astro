@@ -84,7 +84,7 @@ const { ArrayItems } = Astro.props;
 
 <style lang="scss">
     @use "../scss/settings/" as *;
-    $breakpoint: 768px;
+    $breakpoint: 1024px;
 
     header {
         position: fixed;
@@ -115,7 +115,7 @@ const { ArrayItems } = Astro.props;
             inset: 0;
             background-color: rgba(0, 0, 0, 0.282);
 
-            @include media-Query(tablet) {
+            @include media-Query(desktop) {
                 content: none;
             }
         }
@@ -159,7 +159,7 @@ const { ArrayItems } = Astro.props;
             &.subNavbar {
                 overflow: hidden;
 
-                @include media-Query(tablet) {
+                @include media-Query(desktop) {
                     position: absolute;
                     overflow: visible;
                     top: 100%;
@@ -167,14 +167,13 @@ const { ArrayItems } = Astro.props;
                     flex-direction: column;
                     gap: 0;
                     align-items: start;
-                    // background-color: rgb(255, 245, 245);
                     background-color: rgb(255, 255, 255);
                     border: 1px solid rgba(0, 0, 0, 0.144);
                     height: auto;
                 }
             }
 
-            @include media-Query(tablet) {
+            @include media-Query(desktop) {
                 flex-direction: row;
                 align-items: center;
                 height: 100%;
@@ -187,12 +186,16 @@ const { ArrayItems } = Astro.props;
             padding: 1em;
             font-weight: 400;
             color: $color-neutral-950;
-            @include media-Query(tablet) {
+
+            &.active{
+                background-color: red;
+            }
+            @include media-Query(desktop) {
                 padding: 0.5em 1em;
             }
         }
 
-        @media (width > $breakpoint) {
+        @include media-Query(desktop) {
             position: static;
             width: auto;
             height: auto;
@@ -225,7 +228,7 @@ const { ArrayItems } = Astro.props;
         font-size: 1.5rem;
         color: #0f1526;
 
-        @media (width > $breakpoint) {
+        @include media-Query(desktop) {
             display: none;
         }
     }
@@ -247,7 +250,7 @@ const { ArrayItems } = Astro.props;
             display: flex;
         }
 
-        @media (width > $breakpoint) {
+        @include media-Query(desktop) {
             display: none;
 
             &[data-show="true"] {
@@ -266,7 +269,8 @@ const { ArrayItems } = Astro.props;
     const $BtnToogle = document.getElementById("btn-Toogle");
     const $BtnClose = document.getElementById("btn-Close");
     const $NavbarMain = document.getElementById("Navbar-main");
-    const $NavbarItem = $NavbarMain.querySelectorAll(".Navbar__item");
+    const $NavbarItem = $NavbarMain.querySelector(".Navbar__item") ;
+    const $NavbarLink = $NavbarItem.querySelectorAll(".Navbar__link");
     const $NavbarOverlay = document.getElementById("Navbar-Overlay");
     const $SubNavbarWrapper = document.querySelector(
         ".subNavbar-wrapper",
@@ -319,6 +323,14 @@ const { ArrayItems } = Astro.props;
             $HeaderMain.classList.remove("scroll");
         }
     }
+
+    const CurrentUrl = window.location.href;
+
+    $NavbarLink.forEach( (link : HTMLAnchorElement)  => {
+        if(link.href === CurrentUrl){
+            link.classList.add("active")
+        }
+    })
 
     document.addEventListener("scroll", () => {
         lastKnownScrollPosition = window.scrollY;
