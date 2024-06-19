@@ -1,0 +1,149 @@
+@use "../settings/" as *;
+
+.navbar {
+
+    --_bg-color-navbar: var(--bg-color-navbar, #{$color-neutral-000});
+    --_bg-color-sub-navbar: var(--bg-color-sub-navbar,#{$color-neutral-000});
+    --_color-link: var(--color-link, #{$color-neutral-000});
+    --_color-link-sub-navbar: var(--color-link-sub-navbar, #{$color-neutral-950});
+    --_color-link-hover: var(--color-link-hover, #{$color-neutral-000});
+    --_bg-color-link: var(--bg-color-link, transparent);
+    --_bg-color-link-hover: var(--bg-color-link-hover, #{$color-green-500});
+
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100vh;
+    transition: transform 0.3s;
+    transform: translateX(100%);
+    padding: 5px 10px;
+    background-color: var(--_bg-color-navbar);
+    overflow-y: auto;
+
+    &[aria-expanded="true"] {
+        transform: translateX(0);
+    }
+
+    @include media-Query(tablet) {
+        --bg-color-navbar : transparent;
+        position: static;
+        width: auto;
+        height: auto;
+        transition: none;
+        transform: translateX(0);
+        padding: 0;
+        overflow: visible;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+
+        @include media-Query(desktop) {
+            flex-direction: row;
+            align-items: center;
+            height: 100%;
+            gap: 15px;
+        }
+    }
+
+    &__item{
+         position: relative;
+         
+         
+    }
+
+    &__link {
+
+        padding: .5em 1em;
+        border-radius: .15rem;
+        color: var(--_color-link);
+
+        &:is(:hover, :focus) {
+            background-color: var(--_bg-color-link-hover);
+            color: var(--_color-link-hover);
+        }
+
+        &--action{
+            align-items: center;
+            gap: 1rem;
+
+           
+        }
+
+        &--sub-navbar {
+           
+            width: 100%;
+            color: var(--_color-link-sub-navbar);
+            padding: .5em;
+            border-radius: 0;
+
+            
+        }
+
+    }
+
+    &__sub-navbar {
+        overflow: hidden;
+        background-color: var(--_bg-color-sub-navbar);
+
+        &.active {
+            display: flex;
+        }
+
+        @include media-Query(tablet) {
+            position: absolute;
+            overflow: visible;
+            top: 100%;
+            width: 100%;
+            height: auto;
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            border-radius: .15rem;
+
+            &:hover{
+                display: flex;
+            }
+           
+        }
+
+        &-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.5s;
+
+            &[aria-expanded="true"] {
+                grid-template-rows: 1fr;
+            }
+        }
+
+    }
+
+    &__icon{
+
+
+        pointer-events: none;
+        transform: rotate(-180deg);
+        transition: transform .3s;
+        color: var(--_color-link);
+
+        &[data-rotate="true"]{
+            transform: rotate(0deg);
+        }
+
+        &-wrapper{
+            padding-block: .4rem;
+            cursor: pointer;
+        }
+
+        
+    }
+
+    &--theme-first {
+        --bg-color-navbar: $color-neutral-000;
+        --link-color : $color-neutral-950;
+    }
+}

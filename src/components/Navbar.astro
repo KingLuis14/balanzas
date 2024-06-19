@@ -1,0 +1,183 @@
+---
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import DataMenu from "@/data/Menu.json";
+import { Icon } from "astro-icon/components";
+---
+
+<header id="Header-Main">
+    <LayoutWrapper classBlock="header-wrapper">
+        <span>
+            <Icon name="Dev" size={50} />
+        </span>
+        <nav class="navbar" id="Navbar-main">
+            <ul class="navbar__list">
+                {
+                    DataMenu.map(({ item, url, child }) => (
+                        <li class="navbar__item">
+                            <span style="display: flex; align-items: center;">
+                                <a
+                                    class:list={[
+                                        "navbar__link",
+                                        {
+                                            "navbar__link--action":
+                                                child.length > 0,
+                                        },
+                                    ]}
+                                    {...(url && { href: url })}
+                                >
+                                    {item}
+                                </a>
+                                {child && child.length > 0 && (
+                                    <span class="navbar__icon-wrapper">
+                                        <Icon
+                                            name="ArrowIcon"
+                                            class="navbar__icon"
+                                        ></Icon>
+                                    </span>
+                                )}
+                            </span>
+                            {child && child.length > 0 && (
+                                <div
+                                    class="navbar__sub-navbar-wrapper"
+                                    aria-expanded="false"
+                                >
+                                    <ul class="navbar__sub-navbar">
+                                        {child.map(({ item, url }) => (
+                                            <li class="navbar__item">
+                                                <a
+                                                    class="navbar__link navbar__link--sub-navbar fs-small"
+                                                    {...(url && { href: url })}
+                                                >
+                                                    {item}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+        <button class="btn-Toogle" id="btn-Toogle" aria-controls="Navbar-main">
+            <Icon name="BtnToogle" size={18} />
+        </button>
+    </LayoutWrapper>
+</header>
+
+<style lang="scss">
+    @use "../scss/components/" as *;
+    @use "../scss/settings/" as *;
+
+    header {
+        position: fixed;
+        top: 0;
+        display: grid;
+        align-content: center;
+        padding-block: 8px;
+        z-index: 1000;
+        width: 100%;
+        height: var(--alto-header);
+        transition: background-color 0.5s;
+    }
+
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+
+        &[data-overlay="true"]::before {
+            content: "";
+            position: fixed;
+            height: 100vh;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.282);
+
+            @include media-Query(desktop) {
+                content: none;
+            }
+        }
+    }
+</style>
+
+<script>
+    const $HeaderMain = document.getElementById("Header-Main");
+    // const $NavbarLinkSubMenu = document.querySelectorAll(".navbar__link--action");
+    const $BtnToogle = document.getElementById("btn-Toogle");
+    const $BtnClose = document.getElementById("btn-Close");
+    const $NavbarMain = document.getElementById("Navbar-main");
+    // const $NavbarItem =
+    //     $NavbarMain.querySelectorAll<HTMLElement>(".Navbar__item");
+    // const $NavbarLink = $NavbarItem.querySelector(".Navbar__link");
+    const $NavbarOverlay = document.getElementById("Navbar-Overlay");
+
+    $HeaderMain?.addEventListener("click", (e) => {
+        const $Element = e.target as HTMLElement;
+
+        if ($Element.classList.contains("btn-Toogle")) {
+            $NavbarMain.setAttribute("aria-expanded", "true");
+            console.log($Element);
+        }
+
+        if ($Element.classList.contains("Navbar__link")) {
+            const $subNavbar = $Element.nextElementSibling;
+            const isExpanded =
+                $subNavbar.getAttribute("aria-expanded") === "true";
+            $subNavbar.setAttribute(
+                "aria-expanded",
+                isExpanded ? "false" : "true",
+            );
+        }
+
+        if ($Element.classList.contains("navbar__icon-wrapper")) {
+            const $subNavbarWrapper = $Element.parentElement.nextElementSibling;
+            const $Icon = $Element.querySelector(".navbar__icon");
+
+            const $subNavbarListActive = $NavbarMain.querySelector(
+                ".navbar__sub-navbar.active",
+            );
+
+            const $subNavbarList = $subNavbarWrapper.querySelector(
+                ".navbar__sub-navbar",
+            );
+            // Si el submenú objetivo ya está activo, simplemente quítale la clase 'active'
+            if ($subNavbarList.classList.contains("active")) {
+                $subNavbarList.classList.remove("active");
+                $Icon.setAttribute("data-rotate", "false");
+            } else {
+                // Si hay otro submenú activo, quítale la clase 'active'
+                if ($subNavbarListActive) {
+                    $subNavbarListActive.classList.remove("active");
+                }
+                // Añade la clase 'active' al submenú objetivo
+                $subNavbarList.classList.add("active");
+                $Icon.setAttribute("data-rotate", "true");
+            }
+        }
+    });
+
+    // $BtnToogle?.addEventListener("click", () => {
+    //     $NavbarOverlay.setAttribute("data-overlay", "true");
+    //     $NavbarMain.setAttribute("aria-expanded", "true");
+    //     $BtnClose.setAttribute("data-show", "true");
+    //     $HeaderMain.classList.add("active");
+    //     // document.body.style.overflow = "hidden";
+    // });
+    $BtnClose?.addEventListener("click", () => {
+        $NavbarOverlay.setAttribute("data-overlay", "false");
+        $BtnClose.setAttribute("data-show", "false");
+        $NavbarMain.setAttribute("aria-expanded", "false");
+        $HeaderMain.classList.remove("active");
+        // document.body.style.overflow = "visible";
+    });
+
+    window.addEventListener("resize", () => {
+        if ($NavbarMain.getAttribute("aria-expanded") === "false") {
+            $NavbarMain.classList.add("noTransition");
+        }
+    });
+
+    document.body.addEventListener("mouseover", () => {
+        $NavbarMain.classList.remove("noTransition");
+    });
+</script>

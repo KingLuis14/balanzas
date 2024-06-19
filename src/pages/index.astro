@@ -7,14 +7,15 @@ import Products from "@/sections/Products.astro";
 import HeroHome from "@/sections/Hero-Home.astro";
 import Slider2 from "@/sections/Slider2.astro";
 import Beneficios from "@/sections/Beneficios.astro";
+import Navbar from "@/components/Navbar.astro";
 
 ---
 
 <MainLayout title="Balanzas del oriente" description="Balanzas del oriente">
-	
+		<Navbar slot="Navbar"/>
 		<HeroHome />
-		<Products />
-		<Beneficios/>
-		<CursosHome />
-		<BalanceBeneficies />
+		<!-- <Products /> -->
+		<!-- <Beneficios/> -->
+		<!-- <CursosHome /> -->
+		<!-- <BalanceBeneficies /> -->
 </MainLayout>

@@ -39,7 +39,8 @@ const {title, description} = Astro.props;
         <slot name="preload" />
 	</head>
 	<body>
-		<Navbar ArrayItems={MenuData} />
+		<slot name="Navbar" />
+		<!-- <Navbar ArrayItems={MenuData} /> -->
 		<slot />
 		<MiFooter />
 		<BtnWhatsApp />
