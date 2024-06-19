@@ -4,7 +4,7 @@
 
     --_bg-color-navbar: var(--bg-color-navbar, #{$color-neutral-000});
     --_bg-color-sub-navbar: var(--bg-color-sub-navbar,#{$color-neutral-000});
-    --_color-link: var(--color-link, #{$color-neutral-000});
+    --_color-link: var(--color-link, #{$color-neutral-950});
     --_color-link-sub-navbar: var(--color-link-sub-navbar, #{$color-neutral-950});
     --_color-link-hover: var(--color-link-hover, #{$color-neutral-000});
     --_bg-color-link: var(--bg-color-link, transparent);
@@ -14,9 +14,9 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 60%;
+    width: 70%;
     height: 100vh;
-    transition: transform 0.3s;
+    transition: transform 250ms;
     transform: translateX(100%);
     padding: 5px 10px;
     background-color: var(--_bg-color-navbar);
@@ -26,7 +26,7 @@
         transform: translateX(0);
     }
 
-    @include media-Query(tablet) {
+    @include media-Query(desktop) {
         --bg-color-navbar : transparent;
         position: static;
         width: auto;
@@ -53,18 +53,28 @@
          position: relative;
          
          
+         
     }
 
     &__link {
-
-        padding: .5em 1em;
+        display: block;
+        padding-block: .5em;
+        padding-left: .5em;
+        box-shadow: none;
+        
         border-radius: .15rem;
         color: var(--_color-link);
+
+        @include media-Query(desktop) {
+            padding: .5em 1em;
+        }
 
         &:is(:hover, :focus) {
             background-color: var(--_bg-color-link-hover);
             color: var(--_color-link-hover);
         }
+
+        
 
         &--action{
             align-items: center;
@@ -88,21 +98,24 @@
     &__sub-navbar {
         overflow: hidden;
         background-color: var(--_bg-color-sub-navbar);
+        flex-direction: column;
 
-        &.active {
-            display: flex;
-        }
-
-        @include media-Query(tablet) {
+        
+        @include media-Query(desktop) {
             position: absolute;
             overflow: visible;
             top: 100%;
             width: 100%;
             height: auto;
             display: none;
-            flex-direction: column;
+            
             gap: 0;
             border-radius: .15rem;
+
+            &.active {
+                display: flex;
+            }
+    
 
             &:hover{
                 display: flex;
@@ -115,9 +128,11 @@
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.5s;
 
-            &[aria-expanded="true"] {
+            &[aria-expanded] {
                 grid-template-rows: 1fr;
             }
+
+            
         }
 
     }
@@ -130,20 +145,42 @@
         transition: transform .3s;
         color: var(--_color-link);
 
-        &[data-rotate="true"]{
+        &[data-rotate]{
             transform: rotate(0deg);
         }
 
         &-wrapper{
             padding-block: .4rem;
             cursor: pointer;
+            pointer-events: none;
         }
 
         
     }
 
+    &__group-link{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        // background-color: crimson;
+
+        &:is(:hover, :focus) {
+            background-color: var(--_bg-color-link-hover);
+            color: var(--_color-link-hover);
+        }
+
+
+
+    }
+
     &--theme-first {
-        --bg-color-navbar: $color-neutral-000;
-        --link-color : $color-neutral-950;
+        
+
+        @include media-Query(desktop) {
+            --color-link:#{$color-neutral-000};
+        }
+
+
     }
 }

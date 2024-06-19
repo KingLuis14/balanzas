@@ -5,16 +5,17 @@ import { Icon } from "astro-icon/components";
 ---
 
 <header id="Header-Main">
-    <LayoutWrapper classBlock="header-wrapper">
+    <LayoutWrapper classBlock="header-wrapper" data-overlay="false"
+    id="Navbar-Overlay">
         <span>
             <Icon name="Dev" size={50} />
         </span>
-        <nav class="navbar" id="Navbar-main">
+        <nav class="navbar navbar--theme-first" id="Navbar-main">
             <ul class="navbar__list">
                 {
                     DataMenu.map(({ item, url, child }) => (
                         <li class="navbar__item">
-                            <span style="display: flex; align-items: center;">
+                            <span class:list={[{'navbar__group-link': child.length > 0}]}>
                                 <a
                                     class:list={[
                                         "navbar__link",
@@ -39,7 +40,7 @@ import { Icon } from "astro-icon/components";
                             {child && child.length > 0 && (
                                 <div
                                     class="navbar__sub-navbar-wrapper"
-                                    aria-expanded="false"
+                                    
                                 >
                                     <ul class="navbar__sub-navbar">
                                         {child.map(({ item, url }) => (
@@ -59,6 +60,9 @@ import { Icon } from "astro-icon/components";
                     ))
                 }
             </ul>
+            <button class="btn-Close" id="btn-Close">
+                <Icon name="BtnClose" size={18} />
+            </button>
         </nav>
         <button class="btn-Toogle" id="btn-Toogle" aria-controls="Navbar-main">
             <Icon name="BtnToogle" size={18} />
@@ -98,78 +102,112 @@ import { Icon } from "astro-icon/components";
             }
         }
     }
+
+    .btn-Toogle {
+        display: flex;
+        padding: 7px;
+        align-self: center;
+        border: none;
+        cursor: pointer;
+        background-color: white;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        color: #0f1526;
+
+        > svg {
+            pointer-events: none;
+        }
+
+        @include media-Query(desktop) {
+            display: none;
+        }
+    }
+
+
+    .btn-Close {
+        background-color: rgb(239, 239, 239);
+        color: #0f1526;
+        border-radius: 50%;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        padding: 10px;
+        border: none;
+        display: flex;
+        cursor: pointer;
+        font-size: 1.5rem;
+        
+
+        > svg {
+            pointer-events: none;
+        }
+
+        @include media-Query(desktop) {
+            display: none;
+        }
+    }
+
 </style>
 
 <script>
+import { defaults } from "autoprefixer";
+
+
     const $HeaderMain = document.getElementById("Header-Main");
-    // const $NavbarLinkSubMenu = document.querySelectorAll(".navbar__link--action");
-    const $BtnToogle = document.getElementById("btn-Toogle");
-    const $BtnClose = document.getElementById("btn-Close");
     const $NavbarMain = document.getElementById("Navbar-main");
-    // const $NavbarItem =
-    //     $NavbarMain.querySelectorAll<HTMLElement>(".Navbar__item");
-    // const $NavbarLink = $NavbarItem.querySelector(".Navbar__link");
     const $NavbarOverlay = document.getElementById("Navbar-Overlay");
+    const isDesktop = window.matchMedia('(mix-width: 1024px)').matches;
+
+    
 
     $HeaderMain?.addEventListener("click", (e) => {
         const $Element = e.target as HTMLElement;
 
+        if ($Element.classList.contains("btn-Close")) {
+            $NavbarMain.setAttribute("aria-expanded", "false");
+            $NavbarOverlay.setAttribute("data-overlay", "false");
+        }
+
         if ($Element.classList.contains("btn-Toogle")) {
             $NavbarMain.setAttribute("aria-expanded", "true");
-            console.log($Element);
+            $NavbarOverlay.setAttribute("data-overlay", "true");
+
         }
 
-        if ($Element.classList.contains("Navbar__link")) {
-            const $subNavbar = $Element.nextElementSibling;
-            const isExpanded =
-                $subNavbar.getAttribute("aria-expanded") === "true";
-            $subNavbar.setAttribute(
-                "aria-expanded",
-                isExpanded ? "false" : "true",
-            );
-        }
+        
 
-        if ($Element.classList.contains("navbar__icon-wrapper")) {
-            const $subNavbarWrapper = $Element.parentElement.nextElementSibling;
+        if ($Element.classList.contains("navbar__group-link")) {
+            const $subNavbarWrapper = $Element.nextElementSibling;
             const $Icon = $Element.querySelector(".navbar__icon");
+            const $IconActive = $NavbarMain.querySelector(".navbar__icon[data-rotate]");
+            const $subNavbarListActive = $NavbarMain.querySelector(".navbar__sub-navbar.active" );
+            const $subNavbarList = $subNavbarWrapper.querySelector(".navbar__sub-navbar");
 
-            const $subNavbarListActive = $NavbarMain.querySelector(
-                ".navbar__sub-navbar.active",
-            );
+            $subNavbarWrapper.toggleAttribute("aria-expanded");
+            $Icon.toggleAttribute("data-rotate")
 
-            const $subNavbarList = $subNavbarWrapper.querySelector(
-                ".navbar__sub-navbar",
-            );
-            // Si el submenú objetivo ya está activo, simplemente quítale la clase 'active'
-            if ($subNavbarList.classList.contains("active")) {
-                $subNavbarList.classList.remove("active");
-                $Icon.setAttribute("data-rotate", "false");
-            } else {
+                if ($subNavbarList.classList.contains("active")) {
+
+                        $subNavbarList.classList.remove("active");
+
+                } else {
                 // Si hay otro submenú activo, quítale la clase 'active'
-                if ($subNavbarListActive) {
-                    $subNavbarListActive.classList.remove("active");
-                }
-                // Añade la clase 'active' al submenú objetivo
+                
+                    if ($subNavbarListActive) {
+                        $subNavbarListActive.classList.remove("active");
+                        $IconActive.removeAttribute("data-rotate");
+                    }
+                
+                
                 $subNavbarList.classList.add("active");
-                $Icon.setAttribute("data-rotate", "true");
-            }
+                }
+                
+
+           
         }
     });
 
-    // $BtnToogle?.addEventListener("click", () => {
-    //     $NavbarOverlay.setAttribute("data-overlay", "true");
-    //     $NavbarMain.setAttribute("aria-expanded", "true");
-    //     $BtnClose.setAttribute("data-show", "true");
-    //     $HeaderMain.classList.add("active");
-    //     // document.body.style.overflow = "hidden";
-    // });
-    $BtnClose?.addEventListener("click", () => {
-        $NavbarOverlay.setAttribute("data-overlay", "false");
-        $BtnClose.setAttribute("data-show", "false");
-        $NavbarMain.setAttribute("aria-expanded", "false");
-        $HeaderMain.classList.remove("active");
-        // document.body.style.overflow = "visible";
-    });
+    
 
     window.addEventListener("resize", () => {
         if ($NavbarMain.getAttribute("aria-expanded") === "false") {

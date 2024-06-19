@@ -7,7 +7,7 @@
     },
     {
         "item": "Quienes Somos",
-        "url": "/nosotros/",
+        "url": "",
         "child" : [
             {
                 "item": "Obras",
