@@ -183,4 +183,13 @@
 
 
     }
+    &--theme-second {
+        
+
+        @include media-Query(desktop) {
+            --color-link:#{$color-neutral-950};
+        }
+
+
+    }
 }

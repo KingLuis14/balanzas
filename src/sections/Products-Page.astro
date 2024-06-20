@@ -1,0 +1,63 @@
+---
+import Button from "@/components/Button.astro";
+import CardContent from "@/components/Card/Card-Content.astro";
+import Card from "@/components/Card/Card.astro";
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import SectionPage from "@/components/SectionPage.astro";
+import {  categoria1, categoria2} from "@/data/Products/index.ts";
+const allProducts = [
+    {
+        titleSection : 'Balanzas Comerciales',
+        categoria :  categoria1.map(product => ({ ...product })),
+    },
+    {
+        titleSection : 'Balanzas de Grameras',
+        categoria : categoria2.map(product => ({ ...product }))
+    }
+];
+
+---
+
+
+{
+    allProducts.map(({categoria, titleSection})=> (
+        <SectionPage classUtilities="padding-section bg-color-primary-100">
+            <LayoutWrapper>
+                <h2 class="title-section text-center">{titleSection}</h2>
+                <div class="grid @md:grid-col:2 @lg:grid-col:4">
+                    {
+                        categoria.map(({ title, img, price, url}, index) => (
+                        <Card {...(index % 2 === 0 && {textAlert: "Oferta"})}>
+                            <picture class="lazy-picture aspect-ratio-box animation-loader" >
+                                {
+                                    img.imagen.map(({url, type})=> (
+                                    <source data-srcset={`/img/${url}`} type={`image/${type}`} />
+                                    ))
+                                }
+                                <img
+                                    class="aspect-ratio-box"
+                                    alt={img.alt}
+                                />
+                            </picture>
+                            <CardContent>
+                                <h3 class="fw-600 line-heigth-normal">{title}</h3>
+                                <span class="fs-title3 fw-600">
+                                    S/{price.now}
+                                    <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
+                                        S/{price.old}
+                                    </del>
+                                </span>
+                                <Button style={{ width: "fit-content" }} variant="secondary" href={url}>
+                                    Ver detalles
+                                </Button>
+                            </CardContent>
+                        </Card>
+                        ))
+                    }
+                </div>
+            </LayoutWrapper>
+        </SectionPage>
+    ))
+}
+
+

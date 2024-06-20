@@ -25,8 +25,8 @@
         ]
     },
     {
-        "item": "Catalogo de Productos",
-        "url": "/nosotros/",
+        "item": "Categorias Productos",
+        "url": "/productos/",
         "child" : [
             {
                 "item": "Balanzas Comerciales",

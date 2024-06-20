@@ -2,6 +2,13 @@
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import DataMenu from "@/data/Menu.json";
 import { Icon } from "astro-icon/components";
+
+interface Props {
+    theme? : "true" | "false";
+}
+
+const {theme = "true"} = Astro.props;
+
 ---
 
 <header id="Header-Main">
@@ -10,7 +17,7 @@ import { Icon } from "astro-icon/components";
         <span>
             <Icon name="Dev" size={50} />
         </span>
-        <nav class="navbar navbar--theme-first" id="Navbar-main">
+        <nav class:list={['navbar', {'navbar--theme-first' : theme === "true"}, {'navbar--theme-second' : theme === "false"}]} id="Navbar-main">
             <ul class="navbar__list">
                 {
                     DataMenu.map(({ item, url, child }) => (
@@ -83,7 +90,12 @@ import { Icon } from "astro-icon/components";
         z-index: 1000;
         width: 100%;
         height: var(--alto-header);
-        transition: background-color 0.5s;
+        transition: background-color 0.4s;
+
+        &.active {
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 5px 10px #0000001a;
+        }
     }
 
     .header-wrapper {
@@ -150,15 +162,9 @@ import { Icon } from "astro-icon/components";
 </style>
 
 <script>
-import { defaults } from "autoprefixer";
-
-
     const $HeaderMain = document.getElementById("Header-Main");
     const $NavbarMain = document.getElementById("Navbar-main");
     const $NavbarOverlay = document.getElementById("Navbar-Overlay");
-    const isDesktop = window.matchMedia('(mix-width: 1024px)').matches;
-
-    
 
     $HeaderMain?.addEventListener("click", (e) => {
         const $Element = e.target as HTMLElement;
@@ -187,23 +193,16 @@ import { defaults } from "autoprefixer";
             $Icon.toggleAttribute("data-rotate")
 
                 if ($subNavbarList.classList.contains("active")) {
-
-                        $subNavbarList.classList.remove("active");
-
+                     $subNavbarList.classList.remove("active");
                 } else {
-                // Si hay otro submenú activo, quítale la clase 'active'
                 
                     if ($subNavbarListActive) {
                         $subNavbarListActive.classList.remove("active");
                         $IconActive.removeAttribute("data-rotate");
                     }
                 
-                
                 $subNavbarList.classList.add("active");
                 }
-                
-
-           
         }
     });
 
@@ -218,4 +217,26 @@ import { defaults } from "autoprefixer";
     document.body.addEventListener("mouseover", () => {
         $NavbarMain.classList.remove("noTransition");
     });
+
+    const scrollOnChange = ()=> {
+
+        if($NavbarMain.classList.contains("navbar--theme-second")){
+            $HeaderMain.classList.add("active");
+            return;
+        };
+        if(window.scrollY > 0 ){
+            $HeaderMain.classList.add("active");
+            $NavbarMain.classList.remove("navbar--theme-first");
+
+        }else{
+            $HeaderMain.classList.remove("active");
+            $NavbarMain.classList.add("navbar--theme-first");
+        }
+    }
+
+    document.addEventListener("scroll", () => {
+        scrollOnChange();
+    })
+    scrollOnChange();
+
 </script>

@@ -1,0 +1,46 @@
+---
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import Navbar from "@/components/Navbar.astro";
+import SectionPage from "@/components/SectionPage.astro";
+import { categoria1, categoria2 } from "@/data/Products/index.ts";
+import MainLayout from "@/layout/MainLayout.astro";
+
+export async function getStaticPaths() {
+    const DataProductos = [...categoria1, ...categoria2];
+    return DataProductos.map((producto) => {
+        return {
+            params: { producto: producto.url },
+            props: producto,
+        };
+    });
+}
+
+const { title, characteristics, img, price, description } = Astro.props;
+---
+
+<MainLayout {title} description="Balanzas del oriente">
+    <Navbar slot="Navbar" theme="false" />
+    <SectionPage>
+        <LayoutWrapper>
+            <div class="grid @md:grid-col:2">
+                <picture class="lazy-picture aspect-ratio-box animation-loader">
+                    {
+                        img.imagen.map(({ url, type }) => (
+                            <source
+                                data-srcset={`/img/${url}`}
+                                type={`image/${type}`}
+                            />
+                        ))
+                    }
+                    <img class="aspect-ratio-box" alt={img.alt} />
+                </picture>
+                <div>
+                    <h1>{title}</h1>
+                    <p>{characteristics}</p>
+                    <p>{description}</p>
+                    <p>{price}</p>
+                </div>
+            </div>
+        </LayoutWrapper>
+    </SectionPage>
+</MainLayout>
