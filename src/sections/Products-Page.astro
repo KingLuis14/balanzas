@@ -4,60 +4,196 @@ import CardContent from "@/components/Card/Card-Content.astro";
 import Card from "@/components/Card/Card.astro";
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import SectionPage from "@/components/SectionPage.astro";
-import {  categoria1, categoria2} from "@/data/Products/index.ts";
+import SliderNext from "@/components/Slider/Slider-Next.astro";
+import SliderPrev from "@/components/Slider/Slider-Prev.astro";
+import { categoria1, categoria2 } from "@/data/Products/index.ts";
+import { Icon } from "astro-icon/components";
 const allProducts = [
     {
-        titleSection : 'Balanzas Comerciales',
-        categoria :  categoria1.map(product => ({ ...product })),
+        titleSection: "Balanzas Comerciales",
+        categoria: categoria1.map((product) => ({ ...product })),
     },
     {
-        titleSection : 'Balanzas de Grameras',
-        categoria : categoria2.map(product => ({ ...product }))
-    }
+        titleSection: "Balanzas de Grameras",
+        categoria: categoria2.map((product) => ({ ...product })),
+    },
 ];
-
 ---
 
-
 {
-    allProducts.map(({categoria, titleSection})=> (
+    allProducts.map(({ categoria, titleSection }) => (
         <SectionPage classUtilities="padding-section bg-color-primary-100">
             <LayoutWrapper>
                 <h2 class="title-section text-center">{titleSection}</h2>
-                <div class="grid @md:grid-col:2 @lg:grid-col:4">
-                    {
-                        categoria.map(({ title, img, price, url}, index) => (
-                        <Card {...(index % 2 === 0 && {textAlert: "Oferta"})}>
-                            <picture class="lazy-picture aspect-ratio-box animation-loader" >
-                                {
-                                    img.imagen.map(({url, type})=> (
-                                    <source data-srcset={`/img/${url}`} type={`image/${type}`} />
-                                    ))
-                                }
-                                <img
-                                    class="aspect-ratio-box"
-                                    alt={img.alt}
-                                />
-                            </picture>
-                            <CardContent>
-                                <h3 class="fw-600 line-heigth-normal">{title}</h3>
-                                <span class="fs-title3 fw-600">
-                                    S/{price.now}
-                                    <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
-                                        S/{price.old}
-                                    </del>
-                                </span>
-                                <Button style={{ width: "fit-content" }} variant="secondary" href={url}>
-                                    Ver detalles
-                                </Button>
-                            </CardContent>
-                        </Card>
-                        ))
-                    }
+                <div class="carrusel-container">
+                    <SliderPrev classBlock="carrusel-product__btnPrev">
+                        <Icon name="ArrowIcon" size={18} />
+                    </SliderPrev>
+                    <div class="carrusel-product">
+                        {categoria.map(({ title, img, price, url }, index) => (
+                            <Card
+                                {...(index % 2 === 0 && {
+                                    textAlert: "Oferta",
+                                })}
+                            >
+                                <picture class="lazy-picture aspect-ratio-box animation-loader">
+                                    {img.imagen.map(({ url, type }) => (
+                                        <source
+                                            data-srcset={`/img/${url}`}
+                                            type={`image/${type}`}
+                                        />
+                                    ))}
+                                    <img
+                                        class="aspect-ratio-box"
+                                        alt={img.alt}
+                                    />
+                                </picture>
+                                <CardContent>
+                                    <h3 class="fw-600 line-heigth-normal">
+                                        {title}
+                                    </h3>
+                                    <span class="fs-title3 fw-600">
+                                        S/{price.now}
+                                        <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
+                                            S/{price.old}
+                                        </del>
+                                    </span>
+                                    <Button
+                                        style={{ width: "fit-content" }}
+                                        variant="secondary"
+                                        href={url}
+                                    >
+                                        Ver detalles
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+
+                    <SliderNext classBlock="carrusel-product__btnNext">
+                        <Icon name="ArrowIcon" size={18} />
+                    </SliderNext>
                 </div>
             </LayoutWrapper>
         </SectionPage>
     ))
 }
 
+<style lang="scss">
+    @use "../scss/settings/" as *;
 
+    .carrusel-container {
+        position: relative;
+    }
+
+    .carrusel-product {
+        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 70%;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        gap: 1rem;
+        padding-block: 0.5rem;
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+
+        > * {
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+        }
+
+        @include media-Query(tablet) {
+            grid-auto-columns: 40%;
+        }
+
+        @include media-Query(desktop) {
+            grid-auto-flow: row;
+            grid-auto-columns: auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            overflow-x: auto;
+        }
+
+        &__btnPrev {
+            left: 0;
+            transform: translate(-50%, -50%);
+            background-color: rgb(0, 0, 0);
+            display: none;
+            outline: 0;
+
+            &.show {
+                display: block;
+
+                @include media-Query(desktop) {
+                    display: none;
+                }
+            }
+        }
+        &__btnNext {
+            right: 0;
+            transform: translate(50%, -50%);
+            background-color: rgb(0, 0, 0);
+            display: none;
+            outline: 0;
+
+            &.show {
+                display: block;
+                @include media-Query(desktop) {
+                    display: none;
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    if (!(navigator.maxTouchPoints > 1)) {
+        console.log("no soporta");
+
+        const $BtnPrevProductSlider = document.querySelectorAll(
+            ".carrusel-product__btnPrev",
+        );
+        const $BtnNextProductSlider = document.querySelectorAll(
+            ".carrusel-product__btnNext",
+        );
+
+        $BtnPrevProductSlider.forEach((boton) => {
+            boton.classList.add("show");
+            console.log(boton);
+        });
+        $BtnNextProductSlider.forEach((boton) => {
+            boton.classList.add("show");
+            console.log(boton);
+        });
+
+        document.addEventListener("click", ({ target }: MouseEvent) => {
+            const $Element = target as HTMLElement;
+
+            if ($Element.classList.contains("carrusel-product__btnPrev")) {
+                const $ScrollProduct = $Element.nextElementSibling;
+                const $ArticleProduct = $ScrollProduct.querySelector(
+                    ".card",
+                ) as HTMLElement;
+                $ScrollProduct.scrollLeft -= $ArticleProduct.offsetWidth;
+            }
+            if ($Element.classList.contains("carrusel-product__btnNext")) {
+                const $ScrollProduct = $Element.previousElementSibling;
+                const $ArticleProduct = $ScrollProduct.querySelector(
+                    ".card",
+                ) as HTMLElement;
+                $ScrollProduct.scrollLeft += $ArticleProduct.offsetWidth;
+            }
+        });
+    }
+
+
+});
+
+
+    
+</script>
