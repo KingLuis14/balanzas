@@ -4,25 +4,38 @@ import DataMenu from "@/data/Menu.json";
 import { Icon } from "astro-icon/components";
 
 interface Props {
-    theme? : "true" | "false";
+    theme?: "true" | "false";
 }
 
-const {theme = "true"} = Astro.props;
-
+const { theme = "true" } = Astro.props;
 ---
 
 <header id="Header-Main">
-    <LayoutWrapper classBlock="header-wrapper" data-overlay="false"
-    id="Navbar-Overlay">
-        <span>
+    <LayoutWrapper
+        classBlock="header-wrapper"
+        data-overlay="false"
+        id="Navbar-Overlay"
+    >
+        <a href="/">
             <Icon name="Dev" size={50} />
-        </span>
-        <nav class:list={['navbar', {'navbar--theme-first' : theme === "true"}, {'navbar--theme-second' : theme === "false"}]} id="Navbar-main">
+        </a>
+        <nav
+            class:list={[
+                "navbar",
+                { "navbar--theme-first": theme === "true" },
+                { "navbar--theme-second": theme === "false" },
+            ]}
+            id="Navbar-main"
+        >
             <ul class="navbar__list">
                 {
                     DataMenu.map(({ item, url, child }) => (
                         <li class="navbar__item">
-                            <span class:list={[{'navbar__group-link': child.length > 0}]}>
+                            <span
+                                class:list={[
+                                    { "navbar__group-link": child.length > 0 },
+                                ]}
+                            >
                                 <a
                                     class:list={[
                                         "navbar__link",
@@ -40,15 +53,12 @@ const {theme = "true"} = Astro.props;
                                         <Icon
                                             name="ArrowIcon"
                                             class="navbar__icon"
-                                        ></Icon>
+                                        />
                                     </span>
                                 )}
                             </span>
                             {child && child.length > 0 && (
-                                <div
-                                    class="navbar__sub-navbar-wrapper"
-                                    
-                                >
+                                <div class="navbar__sub-navbar-wrapper">
                                     <ul class="navbar__sub-navbar">
                                         {child.map(({ item, url }) => (
                                             <li class="navbar__item">
@@ -135,7 +145,6 @@ const {theme = "true"} = Astro.props;
         }
     }
 
-
     .btn-Close {
         background-color: rgb(239, 239, 239);
         color: #0f1526;
@@ -148,7 +157,6 @@ const {theme = "true"} = Astro.props;
         display: flex;
         cursor: pointer;
         font-size: 1.5rem;
-        
 
         > svg {
             pointer-events: none;
@@ -158,95 +166,94 @@ const {theme = "true"} = Astro.props;
             display: none;
         }
     }
-
 </style>
 
 <script>
-    const $HeaderMain = document.getElementById("Header-Main");
-    const $NavbarMain = document.getElementById("Navbar-main");
-    const $NavbarOverlay = document.getElementById("Navbar-Overlay");
-    const $NavbarItem =
-        $NavbarMain.querySelectorAll(".navbar__item");
+    document.addEventListener("astro:page-load", () => {
+        const $HeaderMain = document.getElementById("Header-Main");
+        const $NavbarMain = document.getElementById("Navbar-main");
+        const $NavbarOverlay = document.getElementById("Navbar-Overlay");
+        const $NavbarItem = $NavbarMain.querySelectorAll(".navbar__item");
 
-    $HeaderMain?.addEventListener("click", (e) => {
-        const $Element = e.target as HTMLElement;
+        $HeaderMain?.addEventListener("click", (e) => {
+            const $Element = e.target as HTMLElement;
 
-        if ($Element.classList.contains("btn-Close")) {
-            $NavbarMain.setAttribute("aria-expanded", "false");
-            $NavbarOverlay.setAttribute("data-overlay", "false");
-        }
+            if ($Element.classList.contains("btn-Close")) {
+                $NavbarMain.setAttribute("aria-expanded", "false");
+                $NavbarOverlay.setAttribute("data-overlay", "false");
+            }
 
-        if ($Element.classList.contains("btn-Toogle")) {
-            $NavbarMain.setAttribute("aria-expanded", "true");
-            $NavbarOverlay.setAttribute("data-overlay", "true");
+            if ($Element.classList.contains("btn-Toogle")) {
+                $NavbarMain.setAttribute("aria-expanded", "true");
+                $NavbarOverlay.setAttribute("data-overlay", "true");
+            }
 
-        }
+            if ($Element.classList.contains("navbar__group-link")) {
+                const $subNavbarWrapper = $Element.nextElementSibling;
+                const $Icon = $Element.querySelector(".navbar__icon");
+                const $IconActive = $NavbarMain.querySelector(
+                    ".navbar__icon[data-rotate]",
+                );
+                const $subNavbarListActive = $NavbarMain.querySelector(
+                    ".navbar__sub-navbar.active",
+                );
+                const $subNavbarList = $subNavbarWrapper.querySelector(
+                    ".navbar__sub-navbar",
+                );
 
-        
-
-        if ($Element.classList.contains("navbar__group-link")) {
-            const $subNavbarWrapper = $Element.nextElementSibling;
-            const $Icon = $Element.querySelector(".navbar__icon");
-            const $IconActive = $NavbarMain.querySelector(".navbar__icon[data-rotate]");
-            const $subNavbarListActive = $NavbarMain.querySelector(".navbar__sub-navbar.active" );
-            const $subNavbarList = $subNavbarWrapper.querySelector(".navbar__sub-navbar");
-
-            $subNavbarWrapper.toggleAttribute("aria-expanded");
-            $Icon.toggleAttribute("data-rotate")
+                $subNavbarWrapper.toggleAttribute("aria-expanded");
+                $Icon.toggleAttribute("data-rotate");
 
                 if ($subNavbarList.classList.contains("active")) {
-                     $subNavbarList.classList.remove("active");
+                    $subNavbarList.classList.remove("active");
                 } else {
-                
                     if ($subNavbarListActive) {
                         $subNavbarListActive.classList.remove("active");
                         $IconActive.removeAttribute("data-rotate");
                     }
-                
-                $subNavbarList.classList.add("active");
+
+                    $subNavbarList.classList.add("active");
                 }
-        }
-    });
+            }
+        });
 
-    
+        window.addEventListener("resize", () => {
+            if ($NavbarMain.getAttribute("aria-expanded") === "false") {
+                $NavbarMain.classList.add("noTransition");
+            }
+        });
 
-    window.addEventListener("resize", () => {
-        if ($NavbarMain.getAttribute("aria-expanded") === "false") {
-            $NavbarMain.classList.add("noTransition");
-        }
-    });
+        document.body.addEventListener("mouseover", () => {
+            $NavbarMain.classList.remove("noTransition");
+        });
 
-    document.body.addEventListener("mouseover", () => {
-        $NavbarMain.classList.remove("noTransition");
-    });
-
-    const scrollOnChange = ()=> {
-
-        if($NavbarMain.classList.contains("navbar--theme-second")){
-            $HeaderMain.classList.add("active");
-            return;
+        const scrollOnChange = () => {
+            if ($NavbarMain.classList.contains("navbar--theme-second")) {
+                $HeaderMain.classList.add("active");
+                return;
+            }
+            if (window.scrollY > 0) {
+                $HeaderMain.classList.add("active");
+                $NavbarMain.classList.remove("navbar--theme-first");
+            } else {
+                $HeaderMain.classList.remove("active");
+                $NavbarMain.classList.add("navbar--theme-first");
+            }
         };
-        if(window.scrollY > 0 ){
-            $HeaderMain.classList.add("active");
-            $NavbarMain.classList.remove("navbar--theme-first");
 
-        }else{
-            $HeaderMain.classList.remove("active");
-            $NavbarMain.classList.add("navbar--theme-first");
-        }
-    }
-
-    document.addEventListener("scroll", () => {
+        document.addEventListener("scroll", () => {
+            scrollOnChange();
+        });
         scrollOnChange();
-    })
-    scrollOnChange();
 
-    const CurrentUrl = window.location.href;
-    $NavbarItem.forEach((item) => {
-        const $link = item.querySelector(".navbar__link") as HTMLAnchorElement;
-        if ($link.href === CurrentUrl) {
-            $link.classList.add("active");
-        }
+        const CurrentUrl = window.location.href;
+        $NavbarItem.forEach((item) => {
+            const $link = item.querySelector(
+                ".navbar__link",
+            ) as HTMLAnchorElement;
+            if ($link.href === CurrentUrl) {
+                $link.classList.add("active");
+            }
+        });
     });
-
 </script>

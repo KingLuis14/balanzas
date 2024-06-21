@@ -60,6 +60,9 @@
     padding-block-start: clamp(2rem, 1.2727rem + 3.6364vw, 2.8rem);
 }
 
+.padding-section-top{
+    padding-block-start: $padding-section;
+}
 
 .padding-section-bottom{
     padding-block-end: $padding-section;

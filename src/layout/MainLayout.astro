@@ -5,13 +5,10 @@ interface Props {
     description: string;
 }
 
-
 import "../scss/base/index.scss";
-
-import Navbar from "@/sections/Navbar.astro";
 import MiFooter from "../components/Footer.astro";
-import MenuData from "../data/Menu.json";
 import BtnWhatsApp from "@/components/BtnWhatsApp.astro";
+import { ViewTransitions } from 'astro:transitions';
 
 const {title, description} = Astro.props;
 ---
@@ -37,10 +34,10 @@ const {title, description} = Astro.props;
             crossorigin="anonymous"
         />
         <slot name="preload" />
+        <ViewTransitions />
 	</head>
 	<body>
 		<slot name="Navbar" />
-		<!-- <Navbar ArrayItems={MenuData} /> -->
 		<slot />
 		<MiFooter />
 		<BtnWhatsApp />
@@ -52,7 +49,7 @@ const {title, description} = Astro.props;
 </style>
 
 <script>
-	document.addEventListener("DOMContentLoaded", () => {
+	document.addEventListener("astro:page-load", () => {
 		const lazyImages = document.querySelectorAll(".lazy-picture");
 
 		const observer = new IntersectionObserver(

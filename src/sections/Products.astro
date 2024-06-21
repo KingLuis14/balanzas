@@ -11,7 +11,7 @@ import { Icon } from "astro-icon/components";
 ---
 
 <SectionPage classUtilities="padding-section bg-color-primary-100">
-    <LayoutWrapper>
+    <LayoutWrapper classUtilities="grid" style="gap: 0;">
         <h2 class="title-section text-center">Nuestros Productos</h2>
         <div class="carrusel-container">
             <SliderPrev classBlock="carrusel-product__btnPrev">
@@ -49,6 +49,7 @@ import { Icon } from "astro-icon/components";
                             <Button
                                 style={{ width: "fit-content" }}
                                 variant="secondary"
+                                
                                 href={`/productos/${url}`}
                             >
                                 Ver detalles
@@ -62,7 +63,10 @@ import { Icon } from "astro-icon/components";
                 <Icon name="ArrowIcon" size={18} />
             </SliderNext>
         </div>
-        <Button href="/productos/" >Ver todos los productos</Button>
+        <Button href="/productos/" style="justify-self: center;"
+         classUtilities="margin-b-s:8"
+        
+        >Ver todos los productos</Button>
     </LayoutWrapper>
 </SectionPage>
 
