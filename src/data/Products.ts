@@ -6,6 +6,9 @@ type ImageType = {
 export const Product = [
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza5',
             alt: 'imagen de about 1',
@@ -37,6 +40,9 @@ export const Product = [
     },
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza4',
             alt: 'imagen de about 1',
@@ -68,6 +74,9 @@ export const Product = [
     },
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza3',
             alt: 'imagen de about 1',
@@ -100,6 +109,9 @@ export const Product = [
     
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza4',
             alt: 'imagen de about 1',
@@ -132,6 +144,9 @@ export const Product = [
     
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza2',
             alt: 'imagen de about 1',
@@ -164,6 +179,9 @@ export const Product = [
     
     {
         title: 'Balanza Gramera Valtox BRD09 de 7 Kilos',
+        get url() {
+            return this.title.toLowerCase().replace(/ /g, '-');
+        },
         img: {
             imgName: 'balanza6',
             alt: 'imagen de about 1',

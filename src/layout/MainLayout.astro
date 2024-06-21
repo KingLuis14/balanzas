@@ -88,6 +88,46 @@ const {title, description} = Astro.props;
 		lazyImages.forEach((lazyImage) => {
 			observer.observe(lazyImage);
 		});
+
+		if (!(navigator.maxTouchPoints > 1)) {
+        console.log("no soporta");
+
+        const $BtnPrevProductSlider = document.querySelectorAll(
+            ".carrusel-product__btnPrev",
+        );
+        const $BtnNextProductSlider = document.querySelectorAll(
+            ".carrusel-product__btnNext",
+        );
+
+        $BtnPrevProductSlider.forEach((boton) => {
+            boton.classList.add("show");
+            console.log(boton);
+        });
+        $BtnNextProductSlider.forEach((boton) => {
+            boton.classList.add("show");
+            console.log(boton);
+        });
+
+        document.addEventListener("click", ({ target }: MouseEvent) => {
+            const $Element = target as HTMLElement;
+
+            if ($Element.classList.contains("carrusel-product__btnPrev")) {
+                const $ScrollProduct = $Element.nextElementSibling;
+                const $ArticleProduct = $ScrollProduct.querySelector(
+                    ".card",
+                ) as HTMLElement;
+                $ScrollProduct.scrollLeft -= $ArticleProduct.offsetWidth;
+            }
+            if ($Element.classList.contains("carrusel-product__btnNext")) {
+                const $ScrollProduct = $Element.previousElementSibling;
+                const $ArticleProduct = $ScrollProduct.querySelector(
+                    ".card",
+                ) as HTMLElement;
+                $ScrollProduct.scrollLeft += $ArticleProduct.offsetWidth;
+            }
+        });
+    }
+
 	});
 
 	

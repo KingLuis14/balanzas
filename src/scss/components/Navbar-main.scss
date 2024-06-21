@@ -3,7 +3,7 @@
 .navbar {
 
     --_bg-color-navbar: var(--bg-color-navbar, #{$color-neutral-000});
-    --_bg-color-sub-navbar: var(--bg-color-sub-navbar,#{$color-neutral-000});
+    --_bg-color-sub-navbar: var(--bg-color-sub-navbar,#{$color-neutral-100});
     --_color-link: var(--color-link, #{$color-neutral-950});
     --_color-link-sub-navbar: var(--color-link-sub-navbar, #{$color-neutral-950});
     --_color-link-hover: var(--color-link-hover, #{$color-neutral-000});
@@ -58,8 +58,8 @@
 
     &__link {
         display: block;
-        padding-block: .5em;
-        padding-left: .5em;
+        padding-block: .8rem;
+        padding-left: .5rem;
         box-shadow: none;
         
         border-radius: .15rem;
@@ -70,6 +70,11 @@
         }
 
         &:is(:hover, :focus) {
+            background-color: var(--_bg-color-link-hover);
+            color: var(--_color-link-hover);
+        }
+
+        &.active{
             background-color: var(--_bg-color-link-hover);
             color: var(--_color-link-hover);
         }
@@ -87,7 +92,7 @@
            
             width: 100%;
             color: var(--_color-link-sub-navbar);
-            padding: .5em;
+            padding: .8rem;
             border-radius: 0;
 
             

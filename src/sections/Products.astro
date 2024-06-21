@@ -4,44 +4,137 @@ import CardContent from "@/components/Card/Card-Content.astro";
 import Card from "@/components/Card/Card.astro";
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import SectionPage from "@/components/SectionPage.astro";
-import {Product } from '@/data/Products.ts';
+import SliderNext from "@/components/Slider/Slider-Next.astro";
+import SliderPrev from "@/components/Slider/Slider-Prev.astro";
+import { categoria2} from "@/data/Products/index.ts";
+import { Icon } from "astro-icon/components";
 ---
 
 <SectionPage classUtilities="padding-section bg-color-primary-100">
     <LayoutWrapper>
         <h2 class="title-section text-center">Nuestros Productos</h2>
-        <div class="grid @md:grid-col:2 @lg:grid-col:4">
-        {
-            Product.map(({ title, img, price}, index) => (
-                <Card {...(index % 2 === 0 && {textAlert: "Oferta"})}>
-                    <picture class="lazy-picture aspect-ratio-box animation-loader" >
-                        {
-                            img.imagen.map(({url, type})=> (
-                             <source data-srcset={`/img/${url}`} type={`image/${type}`} />
-                            ))
-                        }
-                        <img
-                            class="aspect-ratio-box"
-                            alt={img.alt}
-                        />
-                    </picture>
-                    <CardContent>
-                        <h3 class="fw-600 line-heigth-normal">{title}</h3>
-                        <span class="fs-title3 fw-600">
-                            S/{price.now}
-                            <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
-                                S/{price.old}
-                            </del>
-                        </span>
-                        <Button style={{ width: "fit-content" }} variant="secondary">
-                            Ver detalles
-                        </Button>
-                    </CardContent>
-                </Card>
-            ))
-        }
+        <div class="carrusel-container">
+            <SliderPrev classBlock="carrusel-product__btnPrev">
+                <Icon name="ArrowIcon" size={18} />
+            </SliderPrev>
+            <div class="carrusel-product">
+                {categoria2.map(({ title, img, price, url }, index) => (
+                    <Card
+                        {...(index % 2 === 0 && {
+                            textAlert: "Oferta",
+                        })}
+                    >
+                        <picture class="lazy-picture aspect-ratio-box animation-loader">
+                            {img.imagen.map(({ url, type }) => (
+                                <source
+                                    data-srcset={`/img/${url}`}
+                                    type={`image/${type}`}
+                                />
+                            ))}
+                            <img
+                                class="aspect-ratio-box"
+                                alt={img.alt}
+                            />
+                        </picture>
+                        <CardContent>
+                            <h3 class="fw-600 line-heigth-normal">
+                                {title}
+                            </h3>
+                            <span class="fs-title3 fw-600">
+                                S/{price.now}
+                                <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
+                                    S/{price.old}
+                                </del>
+                            </span>
+                            <Button
+                                style={{ width: "fit-content" }}
+                                variant="secondary"
+                                href={`/productos/${url}`}
+                            >
+                                Ver detalles
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+
+            <SliderNext classBlock="carrusel-product__btnNext">
+                <Icon name="ArrowIcon" size={18} />
+            </SliderNext>
         </div>
+        <Button href="/productos/" >Ver todos los productos</Button>
     </LayoutWrapper>
 </SectionPage>
+
+<style lang="scss">
+    @use "../scss/settings/" as *;
+
+    .carrusel-container {
+        position: relative;
+    }
+
+    .carrusel-product {
+        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 70%;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        gap: 1rem;
+        padding-block: 0.5rem;
+        &::-webkit-scrollbar {
+            width: 0;
+        }
+
+        > * {
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+        }
+
+        @include media-Query(tablet) {
+            grid-auto-columns: 40%;
+        }
+
+        @include media-Query(desktop) {
+            grid-auto-flow: row;
+            grid-auto-columns: auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            overflow-x: auto;
+        }
+
+        &__btnPrev {
+            left: 0;
+            transform: translate(-50%, -50%);
+            background-color: rgb(0, 0, 0);
+            display: none;
+            outline: 0;
+
+            &.show {
+                display: block;
+
+                @include media-Query(desktop) {
+                    display: none;
+                }
+            }
+        }
+        &__btnNext {
+            right: 0;
+            transform: translate(50%, -50%);
+            background-color: rgb(0, 0, 0);
+            display: none;
+            outline: 0;
+
+            &.show {
+                display: block;
+                @include media-Query(desktop) {
+                    display: none;
+                }
+            }
+        }
+    }
+</style>
+
+
 
 

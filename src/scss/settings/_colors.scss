@@ -2,6 +2,7 @@
 $light : (
     "neutral": (
         "000" : #fff,
+        "100" : rgb(247, 247, 247),
         "200" : #e8e8e8,
         "800" : #4a4a4a,
         "950" : #000,
@@ -9,6 +10,7 @@ $light : (
 
     "primary":(
         "100" : #edfef4,
+        "200" : #d8fde8,
         "500" : #1fbc61,
         "700" : #148143,
     ),
@@ -24,10 +26,12 @@ $light : (
 // global colors tokens
 
 $color-neutral-000 : var(--neutral-000);
+$color-neutral-100 : var(--neutral-100);
 $color-neutral-200 : var(--neutral-200);
 $color-neutral-800 : var(--neutral-800);
 $color-neutral-950 : var(--neutral-950);
 $color-green-100 : var(--primary-100);
+$color-green-200 : var(--primary-200);
 $color-green-500 : var(--primary-500);
 $color-green-700 : var(--primary-700);
 $color-yellow-300 : var(--secondary-300);

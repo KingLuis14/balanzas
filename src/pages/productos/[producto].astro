@@ -20,10 +20,10 @@ const { title, characteristics, img, price, description } = Astro.props;
 
 <MainLayout {title} description="Balanzas del oriente">
     <Navbar slot="Navbar" theme="false" />
-    <SectionPage>
+    <SectionPage classUtilities="bg-color-primary-100">
         <LayoutWrapper>
-            <div class="grid @md:grid-col:2">
-                <picture class="lazy-picture aspect-ratio-box animation-loader">
+            <div class="grid @md:grid-col:2 padding-section-top-product-info">
+                <picture class="product-info__picture lazy-picture aspect-ratio-box animation-loader">
                     {
                         img.imagen.map(({ url, type }) => (
                             <source
@@ -32,15 +32,63 @@ const { title, characteristics, img, price, description } = Astro.props;
                             />
                         ))
                     }
-                    <img class="aspect-ratio-box" alt={img.alt} />
+                    <img class="aspect-ratio-box border-radius-1" alt={img.alt} />
                 </picture>
-                <div>
-                    <h1>{title}</h1>
-                    <p>{characteristics}</p>
-                    <p>{description}</p>
-                    <p>{price}</p>
+                <div class="textFlow" style="--space: .5em">
+                    <h1 class="title-1">{title}</h1>
+                    <p class="fs-title1 fw-600">S/{price.now} <del class="fs-normal fw-500 margin-i-s-3 color-neutral-800">S/{price.old}</del></p>
+                    <h2 >Caracteristicas</h2>
+                    <ul >
+                        {characteristics.map((characterist) => (
+                            <li class="product-info__list">
+                                {characterist}
+                            </li>
+                        ))
+                        
+                        }
+                    </ul>
+                    <h2>Detalles</h2>
+                    <ul>
+                        {description.map((characterist) => (
+                            <li class="product-info__list">
+                                {characterist}
+                            </li>
+                        ))
+                        
+                        }
+                    </ul>
+                    
                 </div>
             </div>
         </LayoutWrapper>
     </SectionPage>
 </MainLayout>
+
+
+<style lang="scss" >
+
+@use "../../scss/settings/" as *;
+
+    .product-info{
+
+        &__list{
+            display: flex;
+            gap: .5rem;
+
+
+            &::before{
+                content: "•";
+                display: block;
+            }
+        }
+
+        &__picture{
+            
+
+            @include media-Query(tablet) {
+                top: $padding-section;
+            position: sticky;
+            }
+        }
+    }
+</style>

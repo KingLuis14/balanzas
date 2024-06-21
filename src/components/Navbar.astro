@@ -165,6 +165,8 @@ const {theme = "true"} = Astro.props;
     const $HeaderMain = document.getElementById("Header-Main");
     const $NavbarMain = document.getElementById("Navbar-main");
     const $NavbarOverlay = document.getElementById("Navbar-Overlay");
+    const $NavbarItem =
+        $NavbarMain.querySelectorAll(".navbar__item");
 
     $HeaderMain?.addEventListener("click", (e) => {
         const $Element = e.target as HTMLElement;
@@ -238,5 +240,13 @@ const {theme = "true"} = Astro.props;
         scrollOnChange();
     })
     scrollOnChange();
+
+    const CurrentUrl = window.location.href;
+    $NavbarItem.forEach((item) => {
+        const $link = item.querySelector(".navbar__link") as HTMLAnchorElement;
+        if ($link.href === CurrentUrl) {
+            $link.classList.add("active");
+        }
+    });
 
 </script>
