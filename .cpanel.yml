@@ -4,10 +4,10 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/balorien/public_html/prueba/
     - mkdir -p $DEPLOYPATH  
-    - /bin/cp -R /home/balorien/repositories/balanzas/.vscode $DEPLOYPATH
-    - /bin/cp -R /home/balorien/repositories/balanzas/assets $DEPLOYPATH
-    - /bin/cp -R /home/balorien/repositories/balanzas/css $DEPLOYPATH
-    - /bin/cp -R /home/balorien/repositories/balanzas/fonts $DEPLOYPATH
-    - /bin/cp -R /home/balorien/repositories/balanzas/img $DEPLOYPATH
-    - /bin/cp -R /home/balorien/repositories/balanzas/js $DEPLOYPATH
-    - /bin/cp /home/balorien/repositories/balanzas/index.html $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/.vscode 
+    - /bin/cp -R /home/balorien/repositories/balanzas/assets 
+    - /bin/cp -R /home/balorien/repositories/balanzas/css 
+    - /bin/cp -R /home/balorien/repositories/balanzas/fonts 
+    - /bin/cp -R /home/balorien/repositories/balanzas/img 
+    - /bin/cp -R /home/balorien/repositories/balanzas/js 
+    - /bin/cp /home/balorien/repositories/balanzas/index.html 
