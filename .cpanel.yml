@@ -1,13 +1,13 @@
- YML
 ##### THIS ALLOWS US TO DEPLOY THE SITE FROM A GIT REPO ######
 ---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/balorien/public_html/prueba/
-    - /bin/cp -R .vscode $DEPLOYPATH
-    - /bin/cp -R assets $DEPLOYPATH
-    - /bin/cp -R css $DEPLOYPATH
-    - /bin/cp -R fonts $DEPLOYPATH
-    - /bin/cp -R img $DEPLOYPATH
-    - /bin/cp -R js $DEPLOYPATH
-    /bin/cp index.html $DEPLOYPATH
+    - mkdir -p $DEPLOYPATH  
+    - /bin/cp -R /home/balorien/repositories/balanzas/.vscode $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/assets $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/css $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/fonts $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/img $DEPLOYPATH
+    - /bin/cp -R /home/balorien/repositories/balanzas/js $DEPLOYPATH
+    - /bin/cp /home/balorien/repositories/balanzas/index.html $DEPLOYPATH
