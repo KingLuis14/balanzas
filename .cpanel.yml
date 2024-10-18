@@ -3,7 +3,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/balorien/astro.balorien.com/
+    - export DEPLOYPATH=/home/balorien/public_html/
     - /bin/cp -R .vscode $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/cp -R css $DEPLOYPATH
