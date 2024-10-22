@@ -1,144 +1,39 @@
 ---
-import Button from "@/components/Button.astro";
-import CardContent from "@/components/Card/Card-Content.astro";
-import Card from "@/components/Card/Card.astro";
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
-import SectionPage from "@/components/SectionPage.astro";
-import SliderNext from "@/components/Slider/Slider-Next.astro";
-import SliderPrev from "@/components/Slider/Slider-Prev.astro";
-import { categoria2} from "@/data/Products/index.ts";
-import { Icon } from "astro-icon/components";
+import type { Data } from "@/interface/products";
+import CardProduct from "@/components/CardProduct.astro";
+interface Props extends Data {}
+
+const { allProductos } = Astro.props;
 ---
 
-<SectionPage classUtilities="padding-section bg-color-primary-100">
-    <LayoutWrapper classUtilities="grid" style="gap: 0;">
-        <h2 class="title-section text-center">Nuestros Productos</h2>
-        <div class="carrusel-container">
-            <SliderPrev classBlock="carrusel-product__btnPrev">
-                <Icon name="ArrowIcon" size={18} />
-            </SliderPrev>
-            <div class="carrusel-product">
-                {categoria2.map(({ title, img, price, url }, index) => (
-                    <Card
-                        {...(index % 2 === 0 && {
-                            textAlert: "Oferta",
-                        })}
-                    >
-                        <picture class="lazy-picture aspect-ratio-box animation-loader">
-                            {img.imagen.map(({ url, type }) => (
-                                <source
-                                    data-srcset={`/img/${url}`}
-                                    type={`image/${type}`}
-                                />
-                            ))}
-                            <img
-                                class="aspect-ratio-box"
-                                alt={img.alt}
-                            />
-                        </picture>
-                        <CardContent>
-                            <h3 class="fw-600 line-heigth-normal">
-                                {title}
-                            </h3>
-                            <span class="fs-title3 fw-600">
-                                S/{price.now}
-                                <del class="fs-small fw-400 margin-inline-start-8 color-neutral-500">
-                                    S/{price.old}
-                                </del>
-                            </span>
-                            <Button
-                                style={{ width: "fit-content" }}
-                                variant="secondary"
-                                
-                                href={`/productos/${url}`}
-                            >
-                                Ver detalles
-                            </Button>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+<section class="section-page bg-color-primary-100">
+  <LayoutWrapper
+    style="container-type: inline-size;"
+    classBlock="section-page-flow">
+    <h2 class="title-section" >Mira los Productos que tenemos para ti!</h2>
 
-            <SliderNext classBlock="carrusel-product__btnNext">
-                <Icon name="ArrowIcon" size={18} />
-            </SliderNext>
-        </div>
-        <Button href="/productos/" style="justify-self: center;"
-         classUtilities="margin-b-s:8"
-        
-        >Ver todos los productos</Button>
-    </LayoutWrapper>
-</SectionPage>
+    <div class="container">
+      {allProductos.nodes.slice(0,4).flatMap((node) => <CardProduct {...node} />)}
+    </div>
+    <a class="button button--oneline button--center" href={'/carrito/'} >Ver todos los productos</a>
+  </LayoutWrapper>
+</section>
 
 <style lang="scss">
-    @use "../scss/settings/" as *;
+  @use "../scss/settings/" as *;
 
-    .carrusel-container {
-        position: relative;
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.5rem, 0.6531vw + 0.3469rem, 1rem);
+    // border: 0.1rem solid rgb(237, 237, 237);
+
+    @container (width >= 768px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-
-    .carrusel-product {
-        position: relative;
-        display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns: 70%;
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        gap: 1rem;
-        padding-block: 0.5rem;
-        &::-webkit-scrollbar {
-            width: 0;
-        }
-
-        > * {
-            scroll-snap-align: center;
-            scroll-snap-stop: always;
-        }
-
-        @include media-Query(tablet) {
-            grid-auto-columns: 40%;
-        }
-
-        @include media-Query(desktop) {
-            grid-auto-flow: row;
-            grid-auto-columns: auto;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            overflow-x: auto;
-        }
-
-        &__btnPrev {
-            left: 0;
-            transform: translate(-50%, -50%);
-            background-color: rgb(0, 0, 0);
-            display: none;
-            outline: 0;
-
-            &.show {
-                display: block;
-
-                @include media-Query(desktop) {
-                    display: none;
-                }
-            }
-        }
-        &__btnNext {
-            right: 0;
-            transform: translate(50%, -50%);
-            background-color: rgb(0, 0, 0);
-            display: none;
-            outline: 0;
-
-            &.show {
-                display: block;
-                @include media-Query(desktop) {
-                    display: none;
-                }
-            }
-        }
+    @container (width >= 1024px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+  }
 </style>
-
-
-
-

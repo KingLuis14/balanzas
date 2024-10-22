@@ -1,398 +1,215 @@
 ---
-import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import { Icon } from "astro-icon/components";
 
-interface Item {
-    item: string;
-    url: string;
-    child?: Item[];
-}
-
 interface Props {
-    ArrayItems: Item[];
+  position?: 'sticky'
 }
 
-const { ArrayItems } = Astro.props;
+const { position } = Astro.props;
+
 ---
 
-<header class="bg-color-primary-950" id="header-main">
-    <LayoutWrapper
-        classBlock="header-wrapper"
-        data-overlay="false"
-        id="Navbar-Overlay"
-    >
-        <a href="/">
-            <img class="Logo" src="/Dev.svg" alt="logo enrique calero" />
-        </a>
-        <nav
-            class="Navbar | bg-color-primary-950"
-            aria-expanded="false"
-            id="Navbar-main"
-        >
-            <ul class="Navbar__list">
-                {
-                    ArrayItems.map(({ item, url, child }) => {
-                        return (
-                            <li class="Navbar__item">
-                                {child && child.length > 0 ? (
-                                    <span
-                                        class="Navbar__link"
-                                        style="user-select: none;"
-                                    >
-                                        {item}
-                                    </span>
-                                ) : (
-                                    <a class="Navbar__link" href={`${url}`}>
-                                        {item}
-                                    </a>
-                                )}
-                                {child && child.length > 0 && (
-                                    <div
-                                        class="subNavbar-wrapper"
-                                        aria-expanded="false"
-                                    >
-                                        <ul class="Navbar__list subNavbar">
-                                            {child.map(({ item, url }) => {
-                                                return (
-                                                    <li class="Navbar__item | fs-small">
-                                                        <a
-                                                            class="Navbar__link"
-                                                            href={`${url}`}
-                                                        >
-                                                            {item}
-                                                        </a>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    </div>
-                                )}
-                            </li>
-                        );
-                    })
-                }
-            </ul>
-            <button class="btn-Close" id="btn-Close" data-show="false">
-                <Icon name="BtnClose" size={18} />
-            </button>
-        </nav>
-        <button class="btn-Toogle" id="btn-Toogle" aria-controls="Navbar-main">
-            <Icon name="BtnToogle" size={18} />
-        </button>
-    </LayoutWrapper>
+<header class="menu" id="menu" data-sticky={ position === 'sticky' ? '' : undefined }  >
+  <div class="wrapper menu__container">
+    <Icon name={"facebook"} size={30} />
+
+    <nav class="menu__navigation">
+      <ul class="menu__list">
+        <li>
+          <a class="button button--navigation menu__link" href="/">Inicio</a>
+        </li>
+        <li>
+          <a class="button button--navigation menu__link active" href="#"
+            >Productos</a
+          >
+        </li>
+        <li>
+          <a class="button button--navigation menu__link" href="#">Nosotros</a>
+        </li>
+        <li>
+          <a class="button button--navigation menu__link" href="#">Contacto</a>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="menu__btn">
+      <Icon name={"BtnToogle"} size={25} />
+    </button>
+  </div>
 </header>
 
 <style lang="scss">
-    @use "../scss/settings/" as *;
-    $breakpoint: 1024px;
+  .menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s;
 
-    header {
+    &[data-sticky] {
+      position: sticky;
+      background-color: white;
+      box-shadow: 0 4px 60px #00000014;
+
+      .menu__link:not(.active) {
+        color: black;
+      }
+    }
+
+    &.theme-ligth {
+      background-color: white;
+      box-shadow: 0 4px 60px #00000014;
+
+      .menu__link:not(.active) {
+        color: black;
+      }
+    }
+
+    &__container {
+      --heigth-menu: 70px;
+
+      display: flex;
+      height: var(--heigth-menu);
+      justify-content: space-between;
+      align-items: center;
+      padding-block: 0.5rem;
+      // position: relative;
+    }
+
+    &__list {
+      display: flex;
+      gap: 1.5rem 0.5rem;
+
+      @media (width < 768px) {
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    &__navigation {
+      @media (width < 768px) {
+        background-color: rgb(255, 255, 255);
         position: fixed;
-        top: 0;
-        display: grid;
-        align-content: center;
-        padding-block: 8px;
-        z-index: 1000;
-        width: 100%;
-        height: var(--alto-header);
-        transition: background-color 0.5s;
+        z-index: -1;
+
+        top: var(--heigth-menu);
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        transform: translateY(calc(-100% - var(--heigth-menu)));
+        transition: transform 0.3s ease;
 
         &.active {
-            background-color: rgb(255, 255, 255);
-            box-shadow: 0 5px 10px #0000001a;
+          transform: translateY(0);
         }
+      }
     }
 
-    .header-wrapper {
-        display: flex;
-        justify-content: space-between;
+    &__link {
+      color: var(--black-000);
+      transition: background-color 0.4s;
 
-        &[data-overlay="true"]::before {
-            content: "";
-            position: fixed;
-            height: 100vh;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.282);
+      &.active {
+        background-color: var(--yellow-green-800);
+        color: var(--green-800);
+      }
 
-            @include media-Query(desktop) {
-                content: none;
-            }
-        }
+      &:not(.active):hover {
+        background-color: crimson;
+      }
+
+      @media (width >= 768px) {
+        color: var(--white-000);
+      }
     }
 
-    .Logo {
-        height: 100%;
-        width: auto;
-    }
-
-    .Navbar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 60%;
-        height: 100vh;
-        transition: transform 0.3s;
-        transform: translateX(100%);
-        padding: 5px 10px;
-        background-color: white;
-        overflow-y: auto;
-
-        &[aria-expanded="true"] {
-            transform: translateX(0);
-        }
-
-        &__item {
-            position: relative;
-
-            @include media-Query(tablet) {
-                &:hover > div .subNavbar {
-                    display: flex;
-                }
-            }
-        }
-
-        &__list {
-            display: flex;
-            flex-direction: column;
-
-            &.subNavbar {
-                overflow: hidden;
-
-                & .Navbar__item {
-                    width: 100%;
-                }
-
-                & .Navbar__link {
-                    color: $color-neutral-950;
-                }
-
-                @include media-Query(desktop) {
-                    position: absolute;
-                    overflow: visible;
-                    top: 100%;
-                    width: 100%;
-                    display: none;
-                    flex-direction: column;
-                    gap: 0;
-                    align-items: start;
-                    background-color: rgb(255, 255, 255);
-                    border: 1px solid rgba(0, 0, 0, 0.144);
-                    height: auto;
-                }
-            }
-
-            @include media-Query(desktop) {
-                flex-direction: row;
-                align-items: center;
-                height: 100%;
-                gap: 15px;
-            }
-        }
-
-        &__link {
-            display: block;
-            padding: 1em;
-            border-radius: .15rem;
-            font-weight: 400;
-            color: $color-neutral-950;
-
-            &.activePage {
-                color: $color-neutral-950;
-            }
-
-            &.active {
-                background-color: $color-green-500;
-                color: $color-neutral-000;
-            }
-
-            &:is(:hover, :focus) {
-                background-color: $color-green-500;
-                color: $color-neutral-000;
-            }
-            @include media-Query(desktop) {
-                padding: 0.5em .7em;
-                color: $color-neutral-000;
-            }
-        }
-
-        @include media-Query(desktop) {
-            position: static;
-            width: auto;
-            height: auto;
-            transition: none;
-            transform: translateX(0);
-            background-color: transparent;
-            padding: 0;
-            overflow: visible;
-        }
-    }
-
-    .subNavbar-wrapper {
-        display: grid;
-        grid-template-rows: 0fr;
-        transition: grid-template-rows 0.5s;
-
-        &[aria-expanded="true"] {
-            grid-template-rows: 1fr;
-        }
-    }
-
-    .btn-Toogle {
-        display: flex;
-        padding: 7px;
-        align-self: center;
-        border: none;
-        cursor: pointer;
-        background-color: white;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        color: #0f1526;
-
-        @include media-Query(desktop) {
-            display: none;
-        }
-    }
-
-    .btn-Close {
-        background-color: rgb(239, 239, 239);
-        color: #0f1526;
-        border-radius: 50%;
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        padding: 10px;
-        border: none;
+    &__btn {
+      @media (width >= 768px) {
         display: none;
-        cursor: pointer;
-        font-size: 1.5rem;
-
-        &[data-show="true"] {
-            display: flex;
-        }
-
-        @include media-Query(desktop) {
-            display: none;
-
-            &[data-show="true"] {
-                display: none;
-            }
-        }
+      }
     }
-
-    .noTransition {
-        transition: none;
-    }
+  }
 </style>
 
 <script>
-    const $HeaderMain = document.getElementById("header-main");
-    const $BtnToogle = document.getElementById("btn-Toogle");
-    const $BtnClose = document.getElementById("btn-Close");
-    const $NavbarMain = document.getElementById("Navbar-main");
-    const $NavbarItem =
-        $NavbarMain.querySelectorAll<HTMLElement>(".Navbar__item");
-    // const $NavbarLink = $NavbarItem.querySelector(".Navbar__link");
-    const $NavbarOverlay = document.getElementById("Navbar-Overlay");
-    const $SubNavbarWrapper = document.querySelector(
-        ".subNavbar-wrapper",
-    ) as HTMLElement;
+  document.addEventListener("astro:page-load", () => {
+    const $menuBtn = document.querySelector(".menu__btn");
+    const $menuNav = document.querySelector(".menu__navigation");
+    const $menuElement = document.querySelector("#menu:not([data-sticky])");
 
-    $NavbarMain.addEventListener("click", (e) => {
-        const $Element = e.target as HTMLElement;
+    const isDesktop = () => window.matchMedia("(width >= 768px)").matches;
 
-        if ($Element.classList.contains("Navbar__link")) {
-            const $subNavbar = $Element.nextElementSibling;
-            const isExpanded =
-                $subNavbar.getAttribute("aria-expanded") === "true";
-            $subNavbar.setAttribute(
-                "aria-expanded",
-                isExpanded ? "false" : "true",
-            );
-            console.log($Element);
-        }
-        // $SubNavbarWrapper.setAttribute("aria-expanded", "true");
-    });
+    const throttle = (cb: (...args: any[]) => void, delay: number = 1000) => {
+      let shouldWait = false;
+      let waitingArgs: any[] | null;
 
-    $BtnToogle.addEventListener("click", () => {
-        $NavbarOverlay.setAttribute("data-overlay", "true");
-        $NavbarMain.setAttribute("aria-expanded", "true");
-        $BtnClose.setAttribute("data-show", "true");
-        $HeaderMain.classList.add("active");
-        document.body.style.overflow = 'hidden';
-    });
-    $BtnClose.addEventListener("click", () => {
-        $NavbarOverlay.setAttribute("data-overlay", "false");
-        $BtnClose.setAttribute("data-show", "false");
-        $NavbarMain.setAttribute("aria-expanded", "false");
-        $HeaderMain.classList.remove("active");
-        document.body.style.overflow = 'visible';
-    });
-
-    window.addEventListener("resize", () => {
-        if ($NavbarMain.getAttribute("aria-expanded") === "false") {
-            $NavbarMain.classList.add("noTransition");
-        }
-    });
-
-    document.body.addEventListener("mouseover", () => {
-        $NavbarMain.classList.remove("noTransition");
-    });
-
-    let lastKnownScrollPosition = 0;
-    let ticking = false;
-
-    function handleScroll(scrollPos) {
-        if (scrollPos > 0) {
-            $HeaderMain.classList.add("active");
-            $NavbarItem.forEach((item) => {
-        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
-        $link.classList.add("activePage");
-        
-    });
+      const timeoutFunc = () => {
+        if (waitingArgs == null) {
+          shouldWait = false;
         } else {
-            $HeaderMain.classList.remove("active");
-            $NavbarItem.forEach((item) => {
-        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
-        $link.classList.remove("activePage");
-        
+          cb(...waitingArgs);
+          waitingArgs = null;
+          setTimeout(timeoutFunc, delay);
+        }
+      };
+
+      return (...args: any[]) => {
+        if (shouldWait) {
+          waitingArgs = args;
+          return;
+        }
+
+        cb(...args);
+        shouldWait = true;
+        setTimeout(timeoutFunc, delay);
+      };
+    };
+
+    const handleScroll = (): void => {
+      if (window.scrollY > 0) {
+        $menuElement?.classList.add("theme-ligth");
+      } else {
+        if ($menuNav?.classList.contains("active") && !isDesktop()) return;
+        $menuElement?.classList.remove("theme-ligth");
+      }
+    };
+
+    const handleResize = (): void => {
+      if (isDesktop()) {
+        $menuNav?.classList.remove("active");
+
+        if (window.scrollY === 0) {
+          $menuElement?.classList.remove("theme-ligth");
+        }
+      }
+    };
+
+    $menuBtn?.addEventListener("click", () => {
+      $menuNav?.classList.toggle("active");
+
+      if (window.scrollY === 0) {
+        $menuElement?.classList.toggle("theme-ligth");
+      }
     });
-            
-        }
-    }
 
-    if ($HeaderMain) {
-        const CurrentUrl = window.location.pathname;
+    window.addEventListener(
+      "scroll",
+      throttle(() => {
+        handleScroll();
+      }, 100)
+    );
 
-        if (!(CurrentUrl === "/")) {
-            $HeaderMain.classList.add("active");
-            $NavbarItem.forEach((item) => {
-                const $link = item.querySelector(
-                    ".Navbar__link",
-                ) as HTMLAnchorElement;
-                $link.classList.add("activePage");
-            });
-        }
-    }
-    const CurrentUrl = window.location.href;
-    $NavbarItem.forEach((item) => {
-        const $link = item.querySelector(".Navbar__link") as HTMLAnchorElement;
-        console.log($link);
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        handleResize();
+      }, 100)
+    );
 
-        if ($link.href === CurrentUrl) {
-            $link.classList.add("active");
-        }
-    });
-
-    document.addEventListener("scroll", () => {
-        lastKnownScrollPosition = window.scrollY;
-
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                handleScroll(lastKnownScrollPosition);
-                ticking = false;
-            });
-
-            ticking = true;
-        }
-    });
+    handleScroll();
+  });
 </script>

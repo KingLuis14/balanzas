@@ -1,94 +1,179 @@
 ---
-import LayoutWrapper from "@/components/LayoutWrapper.astro";
-import Navbar from "@/components/Navbar.astro";
-import SectionPage from "@/components/SectionPage.astro";
-import { categoria1, categoria2 } from "@/data/Products/index.ts";
+import Navbar from "@/sections/Navbar.astro";
+import SectionPage from "@/components/ui/SectionPage.astro";
+import type { Data } from "@/interface/products";
 import MainLayout from "@/layout/MainLayout.astro";
+import Typografic from "@/components/ui/Typografic.astro";
+import { wordPressFecth } from "@/utils/WordPressFetch";
+import Button from "@/components/ui/Button.astro";
+import LayoutWrapper from "@/components/LayoutWrapper.astro";
 
 export async function getStaticPaths() {
-    const DataProductos = [...categoria1, ...categoria2];
-    return DataProductos.map((producto) => {
-        return {
-            params: { producto: producto.url },
-            props: producto,
-        };
-    });
+  const data: Data = await wordPressFecth({
+    query: `
+	query NewQuery {
+  allProductos {
+    nodes {
+      productos_balanzas {
+        descripcion
+        descuento
+        id
+        oferta
+        precio
+        imagen {
+          srcSet
+          mediaItemUrl
+          mediaDetails {
+            height
+            width
+          }
+        }
+        detalles {
+          detalle
+        }
+      }
+      slug
+    }
+  }
+}
+	`,
+  });
+
+  return data.allProductos.nodes.map((d) => ({
+    params: {
+      producto: d.slug,
+    },
+    props: d.productos_balanzas,
+  }));
 }
 
-const { title, characteristics, img, price, description } = Astro.props;
+const { id, descripcion, detalles, imagen, precio, oferta, descuento } =
+  Astro.props;
+
+const { width, height } = imagen.mediaDetails;
+
+const { producto: slug } = Astro.params;
+
+const totalDescuento = descuento ? (descuento / 100) * precio : 0;
+const formatPrecio = (precio - totalDescuento).toFixed(2);
 ---
 
-<MainLayout {title} description="Balanzas del oriente">
-    <Navbar slot="Navbar" theme="false" />
-    <SectionPage classUtilities="bg-color-primary-100">
-        <LayoutWrapper>
-            <div class="grid @md:grid-col:2 padding-section-top-product-info">
-                <picture class="product-info__picture lazy-picture aspect-ratio-box animation-loader">
-                    {
-                        img.imagen.map(({ url, type }) => (
-                            <source
-                                data-srcset={`/img/${url}`}
-                                type={`image/${type}`}
-                            />
-                        ))
-                    }
-                    <img class="aspect-ratio-box border-radius-1" alt={img.alt} />
-                </picture>
-                <div class="textFlow" style="--space: .5em">
-                    <h1 class="title-1">{title}</h1>
-                    <p class="fs-title1 fw-600">S/{price.now} <del class="fs-normal fw-500 margin-i-s-3 color-neutral-800">S/{price.old}</del></p>
-                    <h2 >Caracteristicas</h2>
-                    <ul >
-                        {characteristics.map((characterist) => (
-                            <li class="product-info__list">
-                                {characterist}
-                            </li>
-                        ))
-                        
-                        }
-                    </ul>
-                    <h2>Detalles</h2>
-                    <ul>
-                        {description.map((characterist) => (
-                            <li class="product-info__list">
-                                {characterist}
-                            </li>
-                        ))
-                        
-                        }
-                    </ul>
-                    
-                </div>
-            </div>
-        </LayoutWrapper>
-    </SectionPage>
+<MainLayout title={id} description={descripcion}>
+  <Navbar slot="Navbar" position="sticky" />
+  <section class="section-page">
+    <LayoutWrapper classBlock="container">
+      <div>
+        <img
+          src={imagen.mediaItemUrl}
+          id="imgProduct"
+          alt={id}
+          transition:name={slug}
+          style=`aspect-ratio: ${width}/ ${height};`
+        />
+      </div>
+      <div class="container__content">
+        <h1>{id}</h1>
+        <h3 class="container__precio">
+          <span>S/{formatPrecio}</span>
+          {
+            oferta && (
+              <Typografic
+                as="span"
+                size="normal"
+                classes="container__descuento">
+                -{descuento}%
+              </Typografic>
+            )
+          }
+        </h3>
+        <span id="data-precio" data-precio={precio}>S/{precio}</span>
+        <p>{descripcion}</p>
+        <div class="container__groupButton">
+          <Button as="button" theme="product" data-increment>+</Button>
+          <input
+            type="number"
+            id="cantidad"
+            name="custom-input-number"
+            class="fs-normal"
+            value="1"
+            min="1"
+          />
+          <Button as="button" theme="product" data-decrement>-</Button>
+        </div>
+        <Button
+          as="button"
+          size="content"
+          data-slug={slug}
+          data-id={id}
+          data-precio={precio}
+          data-img={imagen.mediaItemUrl}
+          data-oferta={oferta}
+          data-descuento={descuento}
+          data-addToCart>Agregar al carrito</Button
+        >
+        <ul>
+          {detalles.map(({ detalle }) => <li>{detalle}</li>)}
+        </ul>
+        <input type="hidden" id="product-id" value={id} />
+      </div>
+    </LayoutWrapper>
+  </section>
 </MainLayout>
 
+<style lang="scss">
+  @use "../../scss/settings/" as *;
 
-<style lang="scss" >
+  .container {
+    display: grid;
+    // grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
 
-@use "../../scss/settings/" as *;
-
-    .product-info{
-
-        &__list{
-            display: flex;
-            gap: .5rem;
-
-
-            &::before{
-                content: "•";
-                display: block;
-            }
-        }
-
-        &__picture{
-            
-
-            @include media-Query(tablet) {
-                top: $padding-section;
-            position: sticky;
-            }
-        }
+    @media (width >= 768px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &__precio {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    &__descuento {
+      background-color: crimson;
+      padding: 0.2em 0.8em;
+      border-radius: 0.25em;
+      color: white;
+      line-height: normal;
+    }
+
+    &__groupButton {
+      display: flex;
+
+      > input {
+        outline: 0;
+        border: 0;
+        background-color: rgb(244, 244, 244);
+        width: 4rem;
+        text-align: center;
+        padding: 0;
+        font-weight: 700;
+      }
+
+      > input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      > input[type="number"] {
+        -moz-appearance: textfield; /* Para Firefox */
+      }
+    }
+  }
 </style>

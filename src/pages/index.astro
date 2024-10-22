@@ -1,19 +1,49 @@
 ---
 import MainLayout from "@/layout/MainLayout.astro";
-import CursosHome from "@/sections/Cursos-Home.astro";
-import BalanceBeneficies from "@/sections/BalanceBeneficies.astro";
 import Products from "@/sections/Products.astro";
 import HeroHome from "@/sections/Hero-Home.astro";
 import Beneficios from "@/sections/Beneficios.astro";
-import Navbar from "@/components/Navbar.astro";
+import Navbar from "@/sections/Navbar.astro";
+import { wordPressFecth } from "@/utils/WordPressFetch";
+import type { Data } from "@/interface/products";
+import AboutHome from "@/sections/About-Home.astro";
+
+const data: Data = await wordPressFecth({
+  query: `
+	query NewQuery {
+  allProductos {
+    nodes {
+      productos_balanzas {
+        descripcion
+        descuento
+        id
+        oferta
+        precio
+        imagen {
+          srcSet
+          mediaItemUrl
+        }
+        detalles {
+          detalle
+        }
+      }
+      slug
+    }
+  }
+}
+	`,
+});
+
+
 
 ---
 
-<MainLayout title="Balanzas del oriente" description="Ofrecemos una amplia gama de balanzas de alta calidad y precisión para camiones.">
-		<Navbar slot="Navbar"/>
-		<HeroHome />
-		<Products />
-		<Beneficios/>
-		<CursosHome />
-		<BalanceBeneficies />
+<MainLayout
+  title="Balanzas del oriente"
+  description="Ofrecemos una amplia gama de balanzas de alta calidad y precisión para camiones.">
+  <Navbar slot="Navbar" />
+  <HeroHome />
+  <Products allProductos={data.allProductos} />
+  <AboutHome />
+  <Beneficios />
 </MainLayout>

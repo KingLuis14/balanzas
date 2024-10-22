@@ -1,26 +1,12 @@
-$fuente : "inter";
+$fuente: 'inter';
 
-$font-sizes : (
-    superTitle: clamp(2.7rem, 2.1739rem + 1.6304vi, 3.375rem),
-    title1: clamp(1.728rem, 1.6017rem + 0.6313vi, 2.0752rem),
-    title2: clamp(1.44rem, 1.3599rem + 0.4003vi, 1.6602rem),
-    title3: clamp(1.2rem, 1.1534rem + 0.233vi, 1.3281rem),
-    normal: clamp(1rem, 0.9773rem + 0.1136vi, 1.0625rem),
-    small: clamp(0.8854rem, 0.8904rem + -0.0066vi, 0.8889rem),
-    smallx: clamp(0.7378rem, 0.8125rem + -0.0996vi, 0.7901rem),
+$font-sizes: (
+   "super-title-1": clamp(4.4703rem, 4.2149rem + 1.2772vw, 5.3644rem),
+   "super-title-2": clamp(2.861rem, 2.6975rem + 0.8174vw, 3.4332rem),
+   "title-1": clamp(1.8311rem, 1.7264rem + 0.5232vw, 2.1973rem),
+   "title-2": clamp(1.4648rem, 1.3811rem + 0.4185vw, 1.7578rem),
+   "title-3": clamp(1.1719rem, 1.1049rem + 0.3348vw, 1.4063rem),
+   "normal": clamp(0.9375rem, 0.8839rem + 0.2679vw, 1.125rem),
+   "small-1": clamp(0.75rem, 0.7071rem + 0.2143vw, 0.9rem),
+   "small-2": clamp(0.6rem, 0.5657rem + 0.1714vw, 0.72rem),
 );
-
-
-$fs-superTitle : var(--fs-superTitle);
-$fs-title1 : var(--fs-title1);
-$fs-title2 : var(--fs-title2);
-$fs-title3 : var(--fs-title3);
-$fs-normal : var(--fs-normal);
-$fs-small : var(--fs-small);
-$fs-smallx : var(--fs-smallx);
-
-$fw-400: 400;
-$fw-500: 500;
-$fw-600: 600;
-$fw-700: 700;
-$fw-800: 800;

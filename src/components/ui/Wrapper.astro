@@ -1,0 +1,52 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+export const wrapper = cva("wrapper", {
+  variants: {
+    size: {
+      large: "wrapper--lg",
+      medium: "wrapper--sm",
+      form: "wrapper--form",
+    },
+    align: {
+      left: "text-start",
+      center: "text-center",
+      end: "text-right",
+    },
+    textcolor: {
+      black: "color-black-000",
+      white: "color-white-000",
+      green: "color-green-500",
+    },
+  },
+  compoundVariants: [{ size: "medium", class: "uppercase" }],
+});
+
+interface Props extends VariantProps<typeof wrapper>, HTMLAttributes<"div"> {
+  classes?: string;
+}
+
+
+const { size = "large", align, textcolor, classes, ...attrs } = Astro.props;
+---
+
+<div class={wrapper({ size, align, textcolor, class: classes })} {...attrs}>
+  <slot />
+</div>
+
+<style lang="scss">
+  .wrapper {
+    width: var(--wrapper-width);
+    margin-inline: auto;
+
+    // outline: 5px solid orange;
+
+    &--lg {
+      --max-width: 1400px;
+    }
+    &--sm {
+      --max-width: 900px;
+    }
+  }
+</style>

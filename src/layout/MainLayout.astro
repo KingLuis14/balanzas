@@ -5,8 +5,8 @@ interface Props {
     description: string;
 }
 
-import "../scss/base/index.scss";
-import MiFooter from "../components/Footer.astro";
+import "../scss/main.scss";
+import MiFooter from "@/sections/Footer.astro";
 import BtnWhatsApp from "@/components/BtnWhatsApp.astro";
 import { ViewTransitions } from 'astro:transitions';
 
@@ -29,7 +29,7 @@ const {title, description} = Astro.props;
             fetchpriority="high"
             rel="preload"
             as="font"
-            href="/fonts/inter-latin-variable-full-normal.woff2"
+            href="/fonts/Inter-VariableFont_wght-subset.woff2"
             type="font/woff2"
             crossorigin="anonymous"
         />
@@ -44,89 +44,4 @@ const {title, description} = Astro.props;
 	</body>
 </html>
 
-<style is:global lang="scss">
-	@use "../scss/utilities/" as *;
-</style>
 
-<script>
-	document.addEventListener("astro:page-load", () => {
-		const lazyImages = document.querySelectorAll(".lazy-picture");
-
-		const observer = new IntersectionObserver(
-			(entries, observer) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const picture = entry.target;
-						const sources = picture.querySelectorAll("source");
-						const img = picture.querySelector("img");
-
-						sources.forEach((source) => {
-							source.srcset = source.dataset.srcset;
-							img.srcset = source.dataset.srcset;
-						});
-
-						img.addEventListener("load", () => {
-                                setTimeout(() => {
-                                    img.parentElement.classList.remove(
-                                        "animation-loader",
-                                    );
-                                    img.parentElement.classList.add("loaderOk");
-                                }, 500);
-                            });
-						
-						
-						observer.unobserve(picture);
-					}
-				});
-			},
-			{ rootMargin: "0px 0px 0px 0px" },
-		);
-
-		lazyImages.forEach((lazyImage) => {
-			observer.observe(lazyImage);
-		});
-
-		if (!(navigator.maxTouchPoints > 1)) {
-        console.log("no soporta");
-
-        const $BtnPrevProductSlider = document.querySelectorAll(
-            ".carrusel-product__btnPrev",
-        );
-        const $BtnNextProductSlider = document.querySelectorAll(
-            ".carrusel-product__btnNext",
-        );
-
-        $BtnPrevProductSlider.forEach((boton) => {
-            boton.classList.add("show");
-            console.log(boton);
-        });
-        $BtnNextProductSlider.forEach((boton) => {
-            boton.classList.add("show");
-            console.log(boton);
-        });
-
-        document.addEventListener("click", ({ target }: MouseEvent) => {
-            const $Element = target as HTMLElement;
-
-            if ($Element.classList.contains("carrusel-product__btnPrev")) {
-                const $ScrollProduct = $Element.nextElementSibling;
-                const $ArticleProduct = $ScrollProduct.querySelector(
-                    ".card",
-                ) as HTMLElement;
-                $ScrollProduct.scrollLeft -= $ArticleProduct.offsetWidth;
-            }
-            if ($Element.classList.contains("carrusel-product__btnNext")) {
-                const $ScrollProduct = $Element.previousElementSibling;
-                const $ArticleProduct = $ScrollProduct.querySelector(
-                    ".card",
-                ) as HTMLElement;
-                $ScrollProduct.scrollLeft += $ArticleProduct.offsetWidth;
-            }
-        });
-    }
-
-	});
-
-	
-
-</script>

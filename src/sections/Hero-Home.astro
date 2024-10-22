@@ -1,77 +1,81 @@
 ---
-import SliderItem from "@/components/Slider/Slider-Item.astro";
-import SliderList from "@/components/Slider/Slider-List.astro";
-import Slider from "@/components/Slider/Slider.astro";
-import sliderData from "../data/SliderImg";
-import SliderPrev from "@/components/Slider/Slider-Prev.astro";
-import SliderNext from "@/components/Slider/Slider-Next.astro";
-import SliderDot from "@/components/Slider/Slider-Dot.astro";
-import SliderNavigation from "@/components/Slider/Slider-Navigation.astro";
-import { Icon } from "astro-icon/components";
-import Button from "@/components/Button.astro";
-import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import { getImage } from "astro:assets";
+import heroImg from "@/assets/hero-background.png";
+
+const HeroImgC = await getImage({
+  src: heroImg,
+  format: "webp",
+  width: 400,
+  quality: 60,
+});
 ---
 
-<Slider classBlock="hero-slider">
-    <SliderList autoplay>
-        {
-            sliderData.map(({ img, alt }, index) => (
-                <SliderItem 
-                    {...(index === 0 && {'active': true})}
-                    data-moveTransition={`-${(index + 1) * 100}%`}
-                >
-                    {
-                        img.map((imagen) => (
-                            <img src={`/img/${imagen}`} {alt} style="height: 100%;" />
-                        ))
-                    }
-                </SliderItem>
-            ))
-        }
-    </SliderList>
-    <div class="overlay-slider" style="position: absolute; inset: 0;">
-
+<section
+  class="hero bg-color-green-800 color-white-000"
+  style={`background-image: url(${HeroImgC.src});`}>
+  <div class="wrapper hero__container">
+    <div class="hero__content">
+      <h1 class="fs-super-title-2" style="line-height: 1;">
+        Balanzas del <span class="color-yellow-green-300">Oriente</span>
+      </h1>
+      <p class="color-white-200">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, nemo.
+        Omnis velit quisquam adipisci exercitationem?
+      </p>
+      <a class="button button--accent" style="width: fit-content;" href="#"
+        >Ver Productos</a
+      >
     </div>
-    <LayoutWrapper classBlock="hero-slider__group color-neutral-000">
-            <h1 class="superTitle">Balanzas del Oriente</h1>
-            <p>Ofrecemos una amplia gama de balanzas de alta calidad y precisión para camiones.</p>
-            <Button href={`https://api.whatsapp.com/send?phone=51946644615&text=Hola%2C%20me%20brinda%20mas%20informaci%C3%B3n.`} 
-            target="_blank">Contactanos</Button>
-    </LayoutWrapper>
-   
-    <SliderNavigation>
-        {
-            sliderData.map((_, index) => (
-                    <SliderDot
-                        {...(index === 0 && {'active': true})}
-                        data-moveTransition={`-${(index + 1) * 100}%`}
-                    ></SliderDot>
-                ))
-        }
-    </SliderNavigation>
-    
-</Slider>
-
+    <img
+      class="hero__img"
+      src="https://i0.wp.com/www.miyake.pe/wp-content/uploads/2020/08/PR-T.png?fit=1200%2C1200&ssl=1"
+      alt="balanza"
+    />
+  </div>
+</section>
 
 <style lang="scss">
-    .hero-slider{
-        
+  .hero {
+    background-size: 140% 65%;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        &__group{
-            position: absolute;
-            
-            inset: 0;
-            display: grid;
-            align-content: center;
-            justify-items: center;
-            text-align: center;
-            z-index: 20;
-            gap: 1rem;
+    @media (width >= 768px) {
+      background-size: cover;
+      }
 
-            > p {
-                width: min(90% , 80ch);
-            }
-        }
-       
+    &__container {
+      min-height: 100svh;
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      padding-block: 6rem;
+      gap: 4rem 1.5rem;
+
+      @media (width >= 768px) {
+        padding-block: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
+
+    &__content {
+      // background-color: steelblue;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      text-align: center;
+
+      @media (width >= 768px) {
+        text-align: start;
+        align-items: start;
+      }
+    }
+
+    &__img {
+      width: 70%;
+      aspect-ratio: 1;
+      //   background-color: gray;
+    }
+  }
 </style>

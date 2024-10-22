@@ -1,0 +1,38 @@
+.button{
+    padding: .75em 1.6em;
+    border-radius: 100vh;
+    font-weight: 500;
+    transition: background-color .4s, color .4s;
+    
+
+    &--accent{
+        background-color: var(--yellow-green-300);
+        color: var(--green-800);
+    }
+
+    &--oneline{
+        outline: .14em solid var(--green-800);
+        color: var(--green-800);
+        font-weight: 600;
+
+        &:hover{
+            background-color: var(--green-800);
+            color: var(--white-000);
+        }
+    }
+
+    &--navigation{
+        
+        padding: .5em 1.2em;
+        font-weight: 400;
+
+        
+    }
+
+    &--center{
+        display: block;
+        margin-inline: auto;
+        text-align: center;
+        width: max-content;
+    }
+}

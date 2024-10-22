@@ -5,6 +5,9 @@ import purgecss from "astro-purgecss";
 
 // https://astro.build/config
 export default defineConfig({
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+  },
   devToolbar: {
     enabled: false
   },
