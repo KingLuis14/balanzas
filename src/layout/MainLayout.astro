@@ -1,75 +1,81 @@
 ---
-
 interface Props {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
+  image?: string;
 }
 
 import "../scss/main.scss";
 import MiFooter from "@/sections/Footer.astro";
 import BtnWhatsApp from "@/components/BtnWhatsApp.astro";
-import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from "astro:transitions";
 
-const {title, description} = Astro.props;
+const {
+  title,
+  description,
+  image = "https://res.cloudinary.com/dqgolqbbb/images/f_auto,q_auto/v1727559260/D_NQ_NP_777227-MLU72116528097_102023-O/D_NQ_NP_777227-MLU72116528097_102023-O.webp?_i=AA",
+} = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-        <title>{title}</title>
-        <meta name="viewport" content="width=device-width" />
-        <meta name="language" content="spanish"/>
-        <meta name="title" content={description}>
-        <meta name="description" content={description}>
-        <meta name="copyright" content="2024 Balanzas del oriente">
-        <meta name="keywords" content="balanzas peru, balanzas selva" />
-        <meta name="robots" content="index, follow" />
-        <meta name="audience" content="all" />
-        <link
-            fetchpriority="high"
-            rel="preload"
-            as="font"
-            href="/fonts/Inter-VariableFont_wght-subset.woff2"
-            type="font/woff2"
-            crossorigin="anonymous"
-        />
-        <slot name="preload" />
-        <ViewTransitions />
-	</head>
-	<body>
-		<slot name="Navbar" />
-		<slot />
-		<MiFooter />
-		<!-- <BtnWhatsApp /> -->
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="language" content="spanish" />
+    <meta name="title" content={description} />
+    <meta name="description" content={description} />
+    <meta name="copyright" content="2024 Balanzas del oriente" />
+    <meta name="keywords" content="balanzas peru, balanzas selva" />
+    <meta name="robots" content="index, follow" />
+    <meta name="audience" content="all" />
+    <link rel="icon" type="image/x-icon" href="/favicon.svg">
+    <link
+      fetchpriority="high"
+      rel="preload"
+      as="font"
+      href="/fonts/Inter-VariableFont_wght-subset.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <slot name="preload" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={image} />
+
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot name="Navbar" />
+    <slot />
+    <MiFooter />
+    <!-- <BtnWhatsApp /> -->
+  </body>
 </html>
 
-
 <script>
+  document.addEventListener("astro:page-load", () => {
+    const animationLoadingTop = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("ok");
+            observer.unobserve(entry.target);
+          }
+        });
+      }
+    );
 
-    document.addEventListener('astro:page-load', ()=> {
-        const animationLoadingTop = new IntersectionObserver((entries, observer)=> {
+    const $ElementAnimationTop = [
+      ...document.querySelectorAll<HTMLElement>(".loading-top"),
+    ];
 
-entries.forEach( entry => {
-    if(entry.isIntersecting){
-        entry.target.classList.add('ok');
-        observer.unobserve(entry.target);
+    if ($ElementAnimationTop.length > 0) {
+      $ElementAnimationTop.forEach((elem) => animationLoadingTop.observe(elem));
     }
-})
-
-})
-
-const $ElementAnimationTop = [...document.querySelectorAll<HTMLElement>('.loading-top')];
-
-if($ElementAnimationTop.length > 0){
-$ElementAnimationTop.forEach(elem => animationLoadingTop.observe(elem));
-}
-    })
-
-  
-
-    
-
+  });
 </script>
-
-
