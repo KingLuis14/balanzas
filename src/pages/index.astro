@@ -10,6 +10,19 @@ import AboutHome from "@/sections/About-Home.astro";
 import TextInfinite from "@/sections/TextInfinite.astro";
 import Counters from "@/sections/Counters.astro";
 
+import heroBalanza from "@/assets/balanza-hero.webp";
+import heroImg from "@/assets/hero-background.png";
+import { getImage } from "astro:assets";
+
+const backgroundHome = await getImage({
+  src: heroImg,
+  format: "webp",
+  width: 400,
+  quality: 60,
+});
+
+
+
 const data: Data = await wordPressFecth({
   query: `
 	query NewQuery {
@@ -38,13 +51,25 @@ const data: Data = await wordPressFecth({
 
 
 
+
+// console.log(heroBalanza, backgroundHome);
 ---
 
 <MainLayout
   title="Balanzas del oriente"
   description="Ofrecemos una amplia gama de balanzas de alta calidad y precisión para camiones.">
+  <Fragment slot="preload">
+    <link
+      fetchpriority="high"
+      rel="preload"
+      as="image"
+      href={backgroundHome.src}
+      type="image/webp"
+    />
+  </Fragment>
+
   <Navbar slot="Navbar" />
-  <HeroHome />
+  <HeroHome image={heroBalanza} backgroundImage={backgroundHome} />
   <Products allProductos={data.allProductos} />
   <Counters />
   <AboutHome />

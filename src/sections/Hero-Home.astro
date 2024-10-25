@@ -1,18 +1,24 @@
 ---
-import { getImage } from "astro:assets";
-import heroImg from "@/assets/hero-background.png";
+import { Image, getImage } from "astro:assets";
 
-const HeroImgC = await getImage({
-  src: heroImg,
-  format: "webp",
-  width: 400,
-  quality: 60,
-});
+import type { GetImageResult } from "astro";
+
+
+interface Props {
+  image: ImageMetadata;
+  backgroundImage: GetImageResult;
+}
+
+
+
+
+
+const {image : heroBalanza, backgroundImage} = Astro.props;
 ---
 
 <section
   class="hero bg-color-green-800 color-white-000"
-  style={`background-image: url(${HeroImgC.src});`}>
+  style={`background-image: url(${backgroundImage.src});`}>
   <div class="wrapper hero__container">
     <div class="hero__content">
       <h1 class="fs-super-title-2" style="line-height: 1;">
@@ -26,10 +32,12 @@ const HeroImgC = await getImage({
         >Ver Productos</a
       >
     </div>
-    <img
+    <Image
       class="hero__img balanza-hero"
-      src="https://i0.wp.com/www.miyake.pe/wp-content/uploads/2020/08/PR-T.png?fit=1200%2C1200&ssl=1"
+      src={heroBalanza}
       alt="balanza"
+      width={heroBalanza.width / 2}
+      height={heroBalanza.height / 2}
     />
   </div>
 </section>

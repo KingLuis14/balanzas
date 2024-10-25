@@ -1,9 +1,6 @@
 ---
-import { getImage, inferRemoteSize } from "astro:assets";
-const { width, height } = await inferRemoteSize(
-  "https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg"
-);
-
+import { Image, getImage } from "astro:assets";
+import heroBalanza from "@/assets/balanza-gramera.jpg";
 import heroImg from "@/assets/cta-background.png";
 
 const HeroImgC = await getImage({
@@ -35,8 +32,15 @@ const HeroImgC = await getImage({
       >
     </div>
 
-    
-    <img style=`aspect-ratio: ${width} / ${height}`  src="https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg" alt="A cool image" class="container__img loading-top" />
+    <Image
+      class="container__img loading-top"
+      src={heroBalanza}
+      alt="balanza"
+      style=`aspect-ratio: ${heroBalanza.width} / ${heroBalanza.height}`
+      width={heroBalanza.width / 2}
+      height={heroBalanza.height / 2}
+    />
+  
   </div>
 </section>
 
