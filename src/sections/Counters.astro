@@ -1,0 +1,116 @@
+<section class="section-page section-page--counters loading-top">
+    <div class="wrapper">
+       <div class="counters-container color-green-800">
+          <div class="counter" >
+            <p style="max-width: 10ch; text-align: center;" >Balanzas Vendidas</p>
+            <p >
+              <span class="color-green-500">+</span>
+              <span class="counter__number" data-target="500">0</span>
+            </p>
+          </div>
+          <div class="counter">
+            <p  style="max-width: 10ch; text-align: center;" >Clientes Satisfechos</p>
+            <p  >
+              <span class="color-green-500">+</span>
+              <span class="counter__number" data-target="200">0</span>
+            </p>
+          </div>
+          <div class="counter">
+            <p  style="max-width: 10ch; text-align: center;"  >Años Experiencia</p>
+            <p >
+              <span class="color-green-500">+</span>
+              <span class="counter__number" data-target="7">0</span>
+            </p>
+          </div>
+        </div>
+    </div>
+ </section>
+
+
+ <style lang="scss">
+
+.counters-container {
+   //  margin-top: var(--padding-section);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .5rem;
+  }
+
+  .counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-variant-numeric: tabular-nums;
+    padding-block: 1.5rem;
+    line-height: normal;
+    gap: .5rem;
+
+   > p:last-child{
+      display: flex;
+      font-size: clamp(2rem, 3.8788vw + 1.0909rem, 4rem);
+      // background-color: crimson;
+   }
+
+  }
+
+ </style>
+
+
+<script>
+
+  document.addEventListener('astro:page-load', ()=> {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const counter = entry.target as HTMLElement;
+          startCounter(counter, 750);
+          observer.unobserve(counter);
+        }
+      });
+    });
+  
+    const startCounter = (
+      counter: HTMLElement,
+      duration: number = 2500
+    ): void => {
+      const target = +counter.getAttribute("data-target")!;
+      let count = 0;
+      const startTime = performance.now();
+  
+      const updateCounter = (timestamp: number) => {
+        const elapsedTime = timestamp - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+  
+        count = Math.floor(progress * target);
+        counter.innerText = numberWithCommas(count);
+  
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.innerText = numberWithCommas(target); // Asegurarse de que el valor final sea exacto
+        }
+      };
+  
+      requestAnimationFrame(updateCounter);
+    };
+  
+    // Función para formatear números con comas
+    const numberWithCommas = (x: number): string => {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+  
+    const counterAnimationObserver = (): void => {
+      const counters = document.querySelectorAll<HTMLElement>(".counter__number");
+      counters.forEach((counter) => {
+        observer.observe(counter);
+      });
+    };
+  
+    // Iniciar la función de animación
+    counterAnimationObserver();
+  })
+
+
+  
+  </script>

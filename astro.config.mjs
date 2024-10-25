@@ -3,6 +3,8 @@ import icon from "astro-icon";
 
 import purgecss from "astro-purgecss";
 
+import solidJs from "@astrojs/solid-js";
+
 // https://astro.build/config
 export default defineConfig({
   image: {
@@ -11,5 +13,5 @@ export default defineConfig({
   devToolbar: {
     enabled: false
   },
-  integrations: [icon(), purgecss()]
+  integrations: [icon(), purgecss(), solidJs()]
 });

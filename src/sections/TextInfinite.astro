@@ -1,0 +1,39 @@
+
+<section style={{overflowX: 'hidden'}}>
+        <div class="textInfinite">
+            <h2>Venta de todo Tipo de Balanzas en todo el Perú</h2>
+            <h2>Venta de todo Tipo de Balanzas en todo el Perú</h2>
+        </div>
+</section>
+
+
+<style lang="scss">
+
+    .textInfinite{
+        display: flex;
+        background-color: var(--green-800);
+        gap: 4rem;
+        overflow-x: hidden;
+        align-items: center;
+        width: max-content;
+        animation: loopText 20s forwards linear infinite;
+        
+        > h2{
+            // font-family: "Bebas-Neue";
+            color: white;
+            font-size: max(5rem, 20vmin);
+            flex-shrink: 0;
+            text-transform: uppercase;
+            font-weight: 500;
+            line-height: 1.5;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+
+        @keyframes loopText {
+            100%{
+                 transform: translate(calc(-50% - 2rem));
+            }
+        }
+    }
+</style>

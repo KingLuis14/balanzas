@@ -1,7 +1,8 @@
 ---
-import {  getImage , inferRemoteSize} from "astro:assets";
-const {width, height} = await inferRemoteSize("https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg");
-
+import { getImage, inferRemoteSize } from "astro:assets";
+const { width, height } = await inferRemoteSize(
+  "https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg"
+);
 
 import heroImg from "@/assets/cta-background.png";
 
@@ -11,37 +12,39 @@ const HeroImgC = await getImage({
   width: 400,
   quality: 60,
 });
-
-
 ---
 
-<section class="section-page container bg-color-green-800" style={`background-image: url(${HeroImgC.src});`} >
+<section
+  class="section-page container bg-color-green-800"
+  style={`background-image: url(${HeroImgC.src});`}>
   <div class="wrapper container__group">
     <div class="container__content">
-      <h2 class="fs-title-1 color-white-000" style="line-height: 1.1; max-width: 22ch;">
-        Tenemos 25 años de experiencia <span class="color-yellow-green-300">en Balanzas</span>
+      <h2
+        class="fs-title-1 color-white-000 loading-top"
+        style="line-height: 1.1; max-width: 22ch;">
+        Tenemos 25 años de experiencia <span class="color-yellow-green-300"
+          >en Balanzas</span
+        >
       </h2>
-      <p class="color-white-200">
+      <p class="color-white-200 loading-top">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, nemo.
         Omnis velit quisquam adipisci exercitationem?
       </p>
-      <a class="button button--accent" style="width: fit-content;" href="#"
+      <a class="button button--accent loading-top" style="width: fit-content;" href="#"
         >Ver Productos</a
       >
     </div>
-    <img style=`aspect-ratio: ${width} / ${height}`  src="https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg" alt="A cool image" class="container__img" />
-   
-   
+
+    
+    <img style=`aspect-ratio: ${width} / ${height}`  src="https://larevista.aqpsoluciones.com/wp-content/uploads/2020/12/BAALNZA-DIGITAL-GRAMERA.jpg" alt="A cool image" class="container__img loading-top" />
   </div>
 </section>
 
 <style lang="scss">
   .container {
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
 
     &__group {
       display: grid;
@@ -52,21 +55,20 @@ const HeroImgC = await getImage({
       }
     }
 
-    &__content{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 1.5rem;
+    &__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
     }
 
-    &__img{
-        
-        // aspect-ratio: 1;
-        min-height: 100%;
-        border-radius: 1rem;
-        @media (width >= 768px) {
-            order: -1;
-        }
+    &__img {
+      // aspect-ratio: 1;
+      min-height: 100%;
+      border-radius: 1rem;
+      @media (width >= 768px) {
+        order: -1;
+      }
     }
   }
 </style>

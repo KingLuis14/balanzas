@@ -1,12 +1,14 @@
 ---
 import MainLayout from "@/layout/MainLayout.astro";
-import Products from "@/sections/Products.astro";
+import Products from "@/sections/Products-Home.astro";
 import HeroHome from "@/sections/Hero-Home.astro";
 import Beneficios from "@/sections/Beneficios.astro";
 import Navbar from "@/sections/Navbar.astro";
 import { wordPressFecth } from "@/utils/WordPressFetch";
 import type { Data } from "@/interface/products";
 import AboutHome from "@/sections/About-Home.astro";
+import TextInfinite from "@/sections/TextInfinite.astro";
+import Counters from "@/sections/Counters.astro";
 
 const data: Data = await wordPressFecth({
   query: `
@@ -44,6 +46,8 @@ const data: Data = await wordPressFecth({
   <Navbar slot="Navbar" />
   <HeroHome />
   <Products allProductos={data.allProductos} />
+  <Counters />
   <AboutHome />
   <Beneficios />
+  <TextInfinite />
 </MainLayout>

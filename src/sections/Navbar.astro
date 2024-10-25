@@ -1,36 +1,78 @@
 ---
+import { ProductCounter } from "@/components/solid/ProductCounter";
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  position?: 'sticky'
+  position?: "sticky";
 }
 
 const { position } = Astro.props;
 
+const currenpath = Astro.url.pathname;
+console.log(currenpath);
+
+const links = [
+  {
+    href: "/",
+    text: "Inicio",
+  },
+  {
+    href: "/productos/",
+    text: "Productos",
+  },
+  {
+    href: "/nosotros/",
+    text: "Nosotros",
+  },
+  {
+    href: "/contacto/",
+    text: "Contacto",
+  },
+];
 ---
 
-<header class="menu" id="menu" data-sticky={ position === 'sticky' ? '' : undefined }  >
+<header
+  class="menu"
+  id="menu"
+  data-sticky={position === "sticky" ? "" : undefined}>
   <div class="wrapper menu__container">
+
     <Icon name={"facebook"} size={30} />
 
-    <nav class="menu__navigation">
-      <ul class="menu__list">
-        <li>
-          <a class="button button--navigation menu__link" href="/">Inicio</a>
-        </li>
-        <li>
-          <a class="button button--navigation menu__link active" href="#"
-            >Productos</a
-          >
-        </li>
-        <li>
-          <a class="button button--navigation menu__link" href="#">Nosotros</a>
-        </li>
-        <li>
-          <a class="button button--navigation menu__link" href="#">Contacto</a>
-        </li>
-      </ul>
-    </nav>
+    
+
+    <div style="display: flex; align-items: center; gap: 1rem; margin-inline-start: auto;" >
+     
+      
+
+      <nav class="menu__navigation">
+        <ul class="menu__list">
+          {
+            links.map(({ href, text }) => (
+              <li>
+                <a
+                  class:list={[
+                    "button button--navigation menu__link",
+                    {
+                      active: href === currenpath,
+                    },
+                  ]}
+                  href={href}>
+                  {text}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="button-counter"  style="width: 30px; height: 30px;"> 
+        <ProductCounter client:only="solid-js"  />
+      </div>
+
+    </div>
+
+    
 
     <button class="menu__btn">
       <Icon name={"BtnToogle"} size={25} />
@@ -55,6 +97,10 @@ const { position } = Astro.props;
       .menu__link:not(.active) {
         color: black;
       }
+
+      .button-counter{
+        color: black;
+      }
     }
 
     &.theme-ligth {
@@ -64,6 +110,15 @@ const { position } = Astro.props;
       .menu__link:not(.active) {
         color: black;
       }
+
+      .button-counter{
+        color: black;
+      }
+
+      .menu__link:not(.active):hover {
+        background-color: var(--yellow-green-300);
+      }
+
     }
 
     &__container {
@@ -74,6 +129,7 @@ const { position } = Astro.props;
       justify-content: space-between;
       align-items: center;
       padding-block: 0.5rem;
+      gap: 1rem;
       // position: relative;
     }
 
@@ -119,7 +175,7 @@ const { position } = Astro.props;
       }
 
       &:not(.active):hover {
-        background-color: crimson;
+        background-color: var(--yellow-green-800-opacity);
       }
 
       @media (width >= 768px) {
@@ -133,6 +189,11 @@ const { position } = Astro.props;
       }
     }
   }
+
+  .button-counter{
+        color: white;
+      }
+
 </style>
 
 <script>

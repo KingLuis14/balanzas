@@ -11,12 +11,12 @@ const { allProductos } = Astro.props;
   <LayoutWrapper
     style="container-type: inline-size;"
     classBlock="section-page-flow">
-    <h2 class="title-section" >Mira los Productos que tenemos para ti!</h2>
+    <h2 class="title-section loading-top" >Mira los Productos que tenemos para ti!</h2>
 
     <div class="container">
-      {allProductos.nodes.flatMap((node) => <CardProduct {...node} />)}
+      {allProductos.nodes.slice(0,4).flatMap((node) => <CardProduct {...node} />)}
     </div>
-    
+    <a class="button button--oneline button--center" href={'/productos/'} >Ver todos los productos</a>
   </LayoutWrapper>
 </section>
 

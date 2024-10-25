@@ -40,8 +40,36 @@ const {title, description} = Astro.props;
 		<slot name="Navbar" />
 		<slot />
 		<MiFooter />
-		<BtnWhatsApp />
+		<!-- <BtnWhatsApp /> -->
 	</body>
 </html>
+
+
+<script>
+
+    document.addEventListener('astro:page-load', ()=> {
+        const animationLoadingTop = new IntersectionObserver((entries, observer)=> {
+
+entries.forEach( entry => {
+    if(entry.isIntersecting){
+        entry.target.classList.add('ok');
+        observer.unobserve(entry.target);
+    }
+})
+
+})
+
+const $ElementAnimationTop = [...document.querySelectorAll<HTMLElement>('.loading-top')];
+
+if($ElementAnimationTop.length > 0){
+$ElementAnimationTop.forEach(elem => animationLoadingTop.observe(elem));
+}
+    })
+
+  
+
+    
+
+</script>
 
 

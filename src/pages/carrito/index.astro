@@ -1,0 +1,26 @@
+---
+import ProductCard from '@/components/solid/ProductCard.tsx';
+import MainLayout from '@/layout/MainLayout.astro';
+import Navbar from "@/sections/Navbar.astro";
+---
+
+<MainLayout title="carrito" description="carrito de compras">
+  <Navbar slot="Navbar" position={'sticky'} />
+  <section class="section-page">
+    <div class="wrapper">
+      <h1>Tu carrito</h1>
+      <div class="container" style="margin-top: 1.75rem;" >
+        <ProductCard client:only="solid-js" />
+      </div>
+    </div>
+  </section>
+  
+</MainLayout>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+</style>

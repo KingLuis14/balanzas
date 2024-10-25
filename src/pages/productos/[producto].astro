@@ -1,12 +1,9 @@
 ---
 import Navbar from "@/sections/Navbar.astro";
-import SectionPage from "@/components/ui/SectionPage.astro";
 import type { Data } from "@/interface/products";
 import MainLayout from "@/layout/MainLayout.astro";
-import Typografic from "@/components/ui/Typografic.astro";
 import { wordPressFecth } from "@/utils/WordPressFetch";
-import Button from "@/components/ui/Button.astro";
-import LayoutWrapper from "@/components/LayoutWrapper.astro";
+import { Icon } from "astro-icon/components";
 
 export async function getStaticPaths() {
   const data: Data = await wordPressFecth({
@@ -55,13 +52,14 @@ const { width, height } = imagen.mediaDetails;
 const { producto: slug } = Astro.params;
 
 const totalDescuento = descuento ? (descuento / 100) * precio : 0;
-const formatPrecio = (precio - totalDescuento).toFixed(2);
+const totalPrecio = Math.ceil((precio - totalDescuento) * 10) / 10;
+const formatPrecio = totalPrecio.toFixed(2);
 ---
 
 <MainLayout title={id} description={descripcion}>
   <Navbar slot="Navbar" position="sticky" />
   <section class="section-page">
-    <LayoutWrapper classBlock="container">
+    <div class="wrapper container">
       <div>
         <img
           src={imagen.mediaItemUrl}
@@ -72,24 +70,31 @@ const formatPrecio = (precio - totalDescuento).toFixed(2);
         />
       </div>
       <div class="container__content">
-        <h1>{id}</h1>
+        <ul class="container__listStar">
+          {
+            "12345".split("").map((star) => (
+              <li class="container__itemStar">
+                <Icon name="star" class="fs-normal" />
+              </li>
+            ))
+          }
+        </ul>
+        <h1 class="fs-title-3" >{id}</h1>
         <h3 class="container__precio">
-          <span>S/{formatPrecio}</span>
+          <span class="fs-super-title-2" style="font-weight: 700;" >S/{formatPrecio}</span>
           {
             oferta && (
-              <Typografic
-                as="span"
-                size="normal"
-                classes="container__descuento">
+              <span
+                class="fs-normal container__descuento">
                 -{descuento}%
-              </Typografic>
+              </span>
             )
           }
         </h3>
-        <span id="data-precio" data-precio={precio}>S/{precio}</span>
+        <span id="data-precio">Precio normal : <del>S/{precio}</del> </span>
         <p>{descripcion}</p>
         <div class="container__groupButton">
-          <Button as="button" theme="product" data-increment>+</Button>
+          <button class="button--oneline"   data-decrement>-</button>
           <input
             type="number"
             id="cantidad"
@@ -97,26 +102,27 @@ const formatPrecio = (precio - totalDescuento).toFixed(2);
             class="fs-normal"
             value="1"
             min="1"
+            disabled
           />
-          <Button as="button" theme="product" data-decrement>-</Button>
+         
+          <button class="button--primary"   data-increment>+</button>
         </div>
-        <Button
-          as="button"
-          size="content"
+        <button
+        class="button button--primary"
           data-slug={slug}
           data-id={id}
           data-precio={precio}
           data-img={imagen.mediaItemUrl}
           data-oferta={oferta}
           data-descuento={descuento}
-          data-addToCart>Agregar al carrito</Button
+          data-addToCart>Agregar al carrito</button
         >
-        <ul>
+        <ul style="padding-inline-start: 1.2em;">
           {detalles.map(({ detalle }) => <li>{detalle}</li>)}
         </ul>
         <input type="hidden" id="product-id" value={id} />
       </div>
-    </LayoutWrapper>
+    </div>
   </section>
 </MainLayout>
 
@@ -126,7 +132,7 @@ const formatPrecio = (precio - totalDescuento).toFixed(2);
   .container {
     display: grid;
     // grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.75rem;
 
     @media (width >= 768px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -141,28 +147,39 @@ const formatPrecio = (precio - totalDescuento).toFixed(2);
     &__precio {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
     &__descuento {
-      background-color: crimson;
+      background-color: var(--yellow-green-800);
       padding: 0.2em 0.8em;
       border-radius: 0.25em;
-      color: white;
+      color: var(--green-800);
       line-height: normal;
     }
 
     &__groupButton {
       display: flex;
+      gap: .5rem;
+
+      > button{
+        width: 2rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+      }
+
+      
+
 
       > input {
         outline: 0;
         border: 0;
-        background-color: rgb(244, 244, 244);
+        background-color: rgb(255, 255, 255);
         width: 4rem;
         text-align: center;
         padding: 0;
         font-weight: 700;
+        color: black;
       }
 
       > input[type="number"]::-webkit-outer-spin-button,
@@ -175,5 +192,107 @@ const formatPrecio = (precio - totalDescuento).toFixed(2);
         -moz-appearance: textfield; /* Para Firefox */
       }
     }
+
+
+    &__listStar {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    &__itemStar {
+      line-height: normal;
+      color: var(--yellow-green-800);
+    }
+
+
   }
 </style>
+
+
+<script>
+  import type { LocalStorageProductsBalanzas } from '@/interface/products';
+   import { atomProductsLength } from '@/store/cartStore';
+  import { addCustomEventListener } from '@/utils/CustomEventListener';
+  import { navigate } from 'astro:transitions/client';
+
+  document.addEventListener('astro:page-load', () => {
+    const productsLocal: LocalStorageProductsBalanzas[] = JSON.parse(
+      localStorage.getItem('product') ?? '[]'
+    );
+
+    const $InputCantidad =
+      document.querySelector<HTMLInputElement>('input#cantidad');
+    const $container = document.querySelector(
+      '.container__content'
+    ) as HTMLElement;
+    const $ProductId = document.querySelector<HTMLInputElement>('#product-id');
+
+    if (!$InputCantidad || !$ProductId) return;
+
+    addCustomEventListener(
+      'click',
+      'button[data-increment]',
+      () => {
+        const valueInput = Number($InputCantidad.value);
+        const cantidad = Math.min(valueInput + 1, 5);
+        $InputCantidad.value = cantidad.toString();
+      },
+      $container
+    );
+
+    addCustomEventListener(
+      'click',
+      'button[data-decrement]',
+      e => {
+        const valueInput = Number($InputCantidad.value);
+        const cantidad = Math.max(valueInput - 1, 1);
+        $InputCantidad.value = cantidad.toString();
+      },
+      $container
+    );
+
+    addCustomEventListener(
+      'click',
+      'button[data-addToCart]',
+      e => {
+        const $element = e.target as HTMLElement;
+        const productId = $ProductId.value;
+        const productQuantity = Number($InputCantidad.value);
+
+        const existingProduct = productsLocal.find(pro => pro.id === productId);
+
+        if (existingProduct) {
+          existingProduct.cantidad = productQuantity;
+        } else {
+          productsLocal.push({
+            slug: $element.getAttribute('data-slug'),
+            id: $element.getAttribute('data-id'),
+            cantidad: productQuantity,
+            imagen: $element.getAttribute('data-img'),
+            precio: Number($element.getAttribute('data-precio')),
+            oferta: $element.hasAttribute('data-oferta'),
+            descuento: Number($element.getAttribute('data-descuento')),
+          });
+        }
+
+        atomProductsLength.set(productsLocal.length);
+
+        localStorage.setItem('product', JSON.stringify(productsLocal));
+
+        navigate('/carrito/');
+      },
+      $container
+    );
+
+    const updateCantidad = () => {
+      const productId = $ProductId.value;
+      const existingProduct = productsLocal.find(pro => pro.id === productId);
+      $InputCantidad.value = existingProduct
+        ? String(existingProduct.cantidad)
+        : '1';
+    };
+
+    updateCantidad();
+  });
+</script>

@@ -1,8 +1,41 @@
 ---
-import Navbar from "@/components/Navbar.astro";
+import Navbar from "@/sections/Navbar.astro";
 import MainLayout from "@/layout/MainLayout.astro";
+import Products from "@/sections/Products.astro";
+import { wordPressFecth } from "@/utils/WordPressFetch";
+import type { Data } from "@/interface/products";
+
+const data: Data = await wordPressFecth({
+  query: `
+	query NewQuery {
+  allProductos {
+    nodes {
+      productos_balanzas {
+        descripcion
+        descuento
+        id
+        oferta
+        precio
+        imagen {
+          srcSet
+          mediaItemUrl
+        }
+        detalles {
+          detalle
+        }
+      }
+      slug
+    }
+  }
+}
+	`,
+});
+
+
+
 ---
 
 <MainLayout title="Productos - Balanzas del oriente" description="Nuestros productos se ajustan a las necesidades de pequeñas y grandes industrias, corporaciones, laboratorios y mucho más">
-    <Navbar slot="Navbar"/>
+    <Navbar slot="Navbar" position="sticky" />
+    <Products allProductos={data.allProductos} />
 </MainLayout>

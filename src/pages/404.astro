@@ -1,13 +1,13 @@
 ---
 import LayoutWrapper from "@/components/LayoutWrapper.astro";
-import Navbar from "@/components/Navbar.astro";
+import Navbar from "@/sections/Navbar.astro";
 import MainLayout from "@/layout/MainLayout.astro";
 import { Icon } from "astro-icon/components";
 
 ---
 
 <MainLayout title="404" description="pagina no encontrada">
-    <Navbar slot="Navbar" theme="false" />
+    <Navbar slot="Navbar" position="sticky" />
     <section class="bg-color-primary-100">
         <LayoutWrapper>
             <div class="page-error text-center">
