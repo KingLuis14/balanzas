@@ -1,5 +1,4 @@
 ---
-import LayoutWrapper from "@/components/LayoutWrapper.astro";
 import type { Data } from "@/interface/products";
 import CardProduct from "@/components/CardProduct.astro";
 interface Props extends Data {}
@@ -8,16 +7,16 @@ const { allProductos } = Astro.props;
 ---
 
 <section class="section-page bg-color-primary-100">
-  <LayoutWrapper
+  <div
     style="container-type: inline-size;"
-    classBlock="section-page-flow">
+    class="wrapper section-page-flow">
     <h2 class="title-section" >Mira los Productos que tenemos para ti!</h2>
 
     <div class="container">
       {allProductos.nodes.flatMap((node) => <CardProduct {...node} />)}
     </div>
     
-  </LayoutWrapper>
+  </div>
 </section>
 
 <style lang="scss">

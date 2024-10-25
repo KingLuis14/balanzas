@@ -54,9 +54,54 @@ const { producto: slug } = Astro.params;
 const totalDescuento = descuento ? (descuento / 100) * precio : 0;
 const totalPrecio = Math.ceil((precio - totalDescuento) * 10) / 10;
 const formatPrecio = totalPrecio.toFixed(2);
+
+const SEO_JSON_DL = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": id,
+  "description": descripcion,
+  "image": imagen.mediaItemUrl,
+  "sku": id,
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "PEN",
+    "price": formatPrecio,
+    "availability": "https://schema.org/InStock",
+    "url": `https://ecomerce-balanzas.netlify.app/productos/${slug}`,
+    "priceValidUntil": "2024-12-31",
+    "discount": oferta ? `${descuento}%` : undefined,
+    "originalPrice": oferta ? precio.toFixed(2) : undefined
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "150"
+  },
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "Cantidad máxima",
+    "value": "5"
+  }
+}
+
+
+
+
+
+
 ---
 
 <MainLayout title={id} description={descripcion} image={imagen.mediaItemUrl}>
+
+  <Fragment slot="json-dl">
+    <script
+          type="application/ld+json"
+          set:html={JSON.stringify(SEO_JSON_DL)}
+        />
+  </Fragment>
+
+
+
   <Navbar slot="Navbar" position="sticky" />
   <section class="section-page">
     <div class="wrapper container">

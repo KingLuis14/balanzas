@@ -31,11 +31,40 @@ const data: Data = await wordPressFecth({
 	`,
 });
 
-
-
+const productListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Lista de Productos de Balanzas del Oriente",
+  description: "Explora todos los productos de Balanzas del Oriente.",
+  url: "https://ecomerce-balanzas.netlify.app/productos",
+  itemListElement: data.allProductos.nodes.map((producto) => ({
+    "@type": "Product",
+    name: producto.productos_balanzas.id,
+    description: producto.productos_balanzas.descripcion,
+    url: `https://ecomerce-balanzas.netlify.app/productos/${producto.slug}`,
+    image: producto.productos_balanzas.imagen.mediaItemUrl,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "PEN", // Cambia esto según sea necesario
+      price: producto.productos_balanzas.precio,
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      url: `https://ecomerce-balanzas.netlify.app/productos/${producto.slug}`,
+    },
+  })),
+};
 ---
 
-<MainLayout title="Productos - Balanzas del oriente" description="Nuestros productos se ajustan a las necesidades de pequeñas y grandes industrias, corporaciones, laboratorios y mucho más">
-    <Navbar slot="Navbar" position="sticky" />
-    <Products allProductos={data.allProductos} />
+<MainLayout
+  title="Productos - Balanzas del oriente"
+  description="Nuestros productos se ajustan a las necesidades de pequeñas y grandes industrias, corporaciones, laboratorios y mucho más">
+  <Fragment slot="json-dl">
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(productListJsonLd)}
+    />
+  </Fragment>
+
+  <Navbar slot="Navbar" position="sticky" />
+  <Products allProductos={data.allProductos} />
 </MainLayout>

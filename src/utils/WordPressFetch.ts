@@ -15,7 +15,6 @@ export const wordPressFecth = async( { query, variable} : wpQuery)=> {
     })
 
     if(!response.ok){
-        console.log(response);
         return {};
         
     }

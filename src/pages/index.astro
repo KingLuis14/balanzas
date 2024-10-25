@@ -22,6 +22,38 @@ const backgroundHome = await getImage({
 });
 
 
+const searchJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization", 
+  name: "Balanzas del Oriente tienda online",
+  description: "Balanzas del Oriente ofrece una amplia variedad de balanzas y soluciones para industrias, laboratorios y más.",
+  url: "https://ecomerce-balanzas.netlify.app/",
+  logo: "https://res.cloudinary.com/dqgolqbbb/images/f_auto,q_auto/v1727559260/D_NQ_NP_777227-MLU72116528097_102023-O/D_NQ_NP_777227-MLU72116528097_102023-O.webp?_i=AA",
+  sameAs: [
+    "https://twitter.com/luis",
+    "https://www.linkedin.com/in/enrique",
+    "https://github.com/enrique",
+  ],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Plaza Mayor",
+    addressLocality: "Lima",
+    addressRegion: "Lima",
+    postalCode: "15001",
+    addressCountry: "PE"
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+51 943 865 528",
+    contactType: "Customer Service",
+    areaServed: "PE",
+    availableLanguage: "Spanish"
+  }
+};
+
+
+
+
 
 const data: Data = await wordPressFecth({
   query: `
@@ -52,7 +84,6 @@ const data: Data = await wordPressFecth({
 
 
 
-// console.log(heroBalanza, backgroundHome);
 ---
 
 <MainLayout
@@ -67,6 +98,14 @@ const data: Data = await wordPressFecth({
       type="image/webp"
     />
   </Fragment>
+
+  <Fragment slot="json-dl">
+    <script
+          type="application/ld+json"
+          set:html={JSON.stringify(searchJsonLd)}
+        />
+  </Fragment>
+
 
   <Navbar slot="Navbar" />
   <HeroHome image={heroBalanza} backgroundImage={backgroundHome} />
