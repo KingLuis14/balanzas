@@ -9,7 +9,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site : 'https://ecomerce-balanzas.netlify.app/',
+  site : 'https://balorien.com/',
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
@@ -17,6 +17,6 @@ export default defineConfig({
     enabled: false
   },
   integrations: [icon(), purgecss(), solidJs(), sitemap({
-    filter: (page) => page !== 'https://ecomerce-balanzas.netlify.app/carrito/',
+    filter: (page) => page !== 'https://balorien.com/carrito/',
   })]
 });

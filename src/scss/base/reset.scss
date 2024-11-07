@@ -86,6 +86,7 @@ button {
 
 input[type="submit"]{
   border: none;
+  font: inherit;
 }
 
 h1,
@@ -114,4 +115,9 @@ h5,
 small,
 .fs-small {
   font-size: var(--small-1);
+}
+
+
+textarea{
+  font: inherit;
 }

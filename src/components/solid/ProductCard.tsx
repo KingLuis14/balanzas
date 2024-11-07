@@ -64,7 +64,7 @@ const ProductList = () => {
         const totalProducto = precioConDescuento * product.cantidad;
 
         // Math.ceil((product.precio - totalDescuento) * 10) / 10
-        return Math.ceil( (total + totalProducto) * 10) / 10 ;
+        return Math.ceil((total + totalProducto) * 10) / 10;
       }, 0)
       .toFixed(2);
   };
@@ -94,7 +94,7 @@ Subtotal: ${totalProducto.toFixed(2)}
     mensaje += `\n`;
     mensaje += `👉 Total a pagar: $${totalAPagar.toFixed(2)}\n`;
 
-    const url = `https://api.whatsapp.com/send/?phone=51943865528&text=${encodeURIComponent(mensaje)}`;
+    const url = `https://api.whatsapp.com/send/?phone=51946644615&text=${encodeURIComponent(mensaje)}`;
 
     window.open(url, "_blank");
   };

@@ -40,6 +40,14 @@
         
     }
 
+    &--loading {
+      
+        color: var(--white-000);
+        background: linear-gradient(90deg, var(--green-600) 0%, var(--green-800) 50%, var(--green-600) 100%);
+        background-size: 200% 100%;
+        animation: loadingBackground 1.5s ease-in-out infinite;
+     }
+
   
 
     &--center{
@@ -48,4 +56,15 @@
         text-align: center;
         width: max-content;
     }
+
+
+    @keyframes loadingBackground {
+        0% {
+           background-position: 200% 0;
+        }
+        100% {
+           background-position: -200% 0;
+        }
+     }
+
 }
