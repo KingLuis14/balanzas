@@ -4,6 +4,7 @@ import icon from "astro-icon";
 import purgecss from "astro-purgecss";
 
 import solidJs from "@astrojs/solid-js";
+import path from 'path';
 
 import sitemap from "@astrojs/sitemap";
 import { SITE } from '@/constants';
@@ -19,5 +20,15 @@ export default defineConfig({
   },
   integrations: [icon(), purgecss(), solidJs(), sitemap({
     filter: (page) => page !== `${SITE}carrito/`,
-  })]
+  })],
+
+  vite: {
+    resolve: {
+      alias: {
+        '@': path.resolve('./src'), // Asegúrate de que `src` es la carpeta donde está `constants`
+      },
+    },
+  },
+
+
 });
