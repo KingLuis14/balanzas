@@ -7,7 +7,7 @@ import solidJs from "@astrojs/solid-js";
 import path from 'path';
 
 import sitemap from "@astrojs/sitemap";
-import { SITE } from '@/constants';
+import { SITE } from './src/constants.ts';
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,13 +22,6 @@ export default defineConfig({
     filter: (page) => page !== `${SITE}carrito/`,
   })],
 
-  vite: {
-    resolve: {
-      alias: {
-        '@': path.resolve('./src'), // Asegúrate de que `src` es la carpeta donde está `constants`
-      },
-    },
-  },
-
+ 
 
 });
