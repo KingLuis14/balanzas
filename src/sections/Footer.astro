@@ -1,4 +1,5 @@
 ---
+import { CELULAR, EMAIL } from "@/constants";
 import { Icon } from "astro-icon/components";
 ---
 
@@ -7,7 +8,7 @@ import { Icon } from "astro-icon/components";
     <nav class="container__navigation">
       <div class="container__logo">
         <h3>
-          <Icon name={"logobalanza"} size={35}  />Logotipo
+          <Icon name={"logobalanza"} size={35} />Logotipo
         </h3>
         <p>Balanzas del Oriente</p>
       </div>
@@ -17,19 +18,20 @@ import { Icon } from "astro-icon/components";
         <ul class="container__list">
           <li><a href="/">Inicio</a></li>
           <li><a href="/productos/">Productos</a></li>
-          <li><a href="/nosotros/">Nosotros</a></li>
           <li><a href="/contacto/">Contacto</a></li>
         </ul>
       </div>
 
-     
-
       <div class="container__groupNav">
         <h3>Empresa</h3>
         <ul class="container__list">
-          <li>balorien@balorien.com</li>
-          
-          <li><a href="#">980784568</a></li>
+          <li>{EMAIL}</li>
+
+          <li>
+            <a
+              href={`https://api.whatsapp.com/send?phone=${CELULAR}&text=Hola%2C%20me%20brinda%20mas%20informaci%C3%B3n.`}
+              target="_blank">{CELULAR}</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -63,7 +65,6 @@ import { Icon } from "astro-icon/components";
 
       > :first-child {
         grid-column: span 2;
-       
       }
 
       @media (width >= 768px) {

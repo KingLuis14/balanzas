@@ -6,10 +6,11 @@ import purgecss from "astro-purgecss";
 import solidJs from "@astrojs/solid-js";
 
 import sitemap from "@astrojs/sitemap";
+import { SITE } from '@/constants';
 
 // https://astro.build/config
 export default defineConfig({
-  site : 'https://balorien.com/',
+  site : SITE,
   image: {
     remotePatterns: [{ protocol: "https" }],
   },
@@ -17,6 +18,6 @@ export default defineConfig({
     enabled: false
   },
   integrations: [icon(), purgecss(), solidJs(), sitemap({
-    filter: (page) => page !== 'https://balorien.com/carrito/',
+    filter: (page) => page !== `${SITE}carrito/`,
   })]
 });

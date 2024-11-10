@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import "./ProductCardStyle.scss";
 import type { LocalStorageProductsBalanzas } from "@/interface/products";
 import { atomProductsLength } from "@/store/cartStore.ts";
+import { CELULAR, SITE } from "@/constants";
 
 const ProductList = () => {
   const localProducts = JSON.parse(
@@ -82,6 +83,7 @@ const ProductList = () => {
 
       mensaje += `
 Producto: ${product.id}
+Link: ${SITE}productos/${product.slug}
 Cantidad: ${product.cantidad}
 Precio unitario: S/ ${precioConDescuento.toFixed(2)}
 Subtotal: ${totalProducto.toFixed(2)}
@@ -94,7 +96,7 @@ Subtotal: ${totalProducto.toFixed(2)}
     mensaje += `\n`;
     mensaje += `👉 Total a pagar: $${totalAPagar.toFixed(2)}\n`;
 
-    const url = `https://api.whatsapp.com/send/?phone=51946644615&text=${encodeURIComponent(mensaje)}`;
+    const url = `https://api.whatsapp.com/send/?phone=${CELULAR}&text=${encodeURIComponent(mensaje)}`;
 
     window.open(url, "_blank");
   };

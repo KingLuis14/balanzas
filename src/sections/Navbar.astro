@@ -20,10 +20,6 @@ const links = [
     text: "Productos",
   },
   {
-    href: "/nosotros/",
-    text: "Nosotros",
-  },
-  {
     href: "/contacto/",
     text: "Contacto",
   },
@@ -36,7 +32,10 @@ const links = [
   data-sticky={position === "sticky" ? "" : undefined}>
   <div class="wrapper menu__container">
 
-    <Icon name={"logobalanza"} size={30} />
+    <a href="/">
+      <Icon name={"logobalanza"} size={30} class="logo" />
+    </a>
+    
 
     
 
@@ -100,6 +99,11 @@ const links = [
       .button-counter{
         color: black;
       }
+
+      .logo{
+      color: black;
+    }
+     
     }
 
     &.theme-ligth {
@@ -114,10 +118,18 @@ const links = [
         color: black;
       }
 
+      .logo{
+      color: black;
+    }
+
       .menu__link:not(.active):hover {
         background-color: var(--yellow-green-300);
       }
 
+    }
+
+    .logo{
+      color: white;
     }
 
     &__container {

@@ -3,6 +3,7 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  btnwsp?: boolean;
 }
 
 import "../scss/main.scss";
@@ -14,6 +15,7 @@ const {
   title,
   description,
   image = "https://res.cloudinary.com/dqgolqbbb/images/f_auto,q_auto/v1727559260/D_NQ_NP_777227-MLU72116528097_102023-O/D_NQ_NP_777227-MLU72116528097_102023-O.webp?_i=AA",
+  btnwsp = true,
 } = Astro.props;
 ---
 
@@ -55,7 +57,10 @@ const {
     <slot name="Navbar" />
     <slot />
     <MiFooter />
-    <!-- <BtnWhatsApp /> -->
+    {
+      btnwsp && <BtnWhatsApp />
+    }
+    
   </body>
 </html>
 

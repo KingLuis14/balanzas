@@ -1,9 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
+import { CELULAR } from "@/constants";
 ---
 
 <a
-    href={`https://api.whatsapp.com/send?phone=51946644615&text=Hola%2C%20me%20brinda%20mas%20informaci%C3%B3n.`}
+    href={`https://api.whatsapp.com/send?phone=${ CELULAR }&text=Hola%2C%20me%20brinda%20mas%20informaci%C3%B3n.`}
     target="_blank"
     class="Container"
     aria-label="boton para abrir el whatsapp"
